@@ -42,8 +42,8 @@ public class Sidewinder implements MazeGenerator{
                         if (mazeGrid[row-2][indexToCutOnNorth].getBlockType() == BlockType.WALL){
                             mazeGrid[row-2][indexToCutOnNorth].setBlockType(BlockType.AIR);
                         }
-
                         column += 2;
+                        break;
                     }
                 }
 
