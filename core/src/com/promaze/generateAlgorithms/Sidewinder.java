@@ -18,51 +18,35 @@ public class Sidewinder implements MazeGenerator{
         int columns = mazeGrid[0].length;
 
         //first row must be clear
-        for (int i = 1; i < columns-1; i++) {
-            mazeGrid[1][i].setBlockType(BlockType.AIR);
+        for (int column = 1; column < columns-1; column++) {
+            mazeGrid[1][column].setBlockType(BlockType.AIR);
         }
 
-//        Jesli u góry jeden przytnij (1 w góre i w prawo)
+        for (int row = 3; row < rows; row+= 2) {
+            for (int column = 1; column < columns - 1;) {
 
-        for (int i = 3; i < rows-1; i+= 2) {
-            for (int j = 1; j < columns-1;) {
-                boolean clear = true;
-                List<Integer> indexesCleared = new LinkedList<>();
-                while (clear){
-                    if (j > (columns - 2)){
-                        break;
-                    }
+                boolean cutRight = true;
+                List<Integer> indexes = new LinkedList<>();
 
-                    mazeGrid[i][j].setBlockType(BlockType.AIR);
-                    indexesCleared.add(j);
-                    clear = random.nextBoolean();
-                    if (clear){
-                        j++;
+                while (cutRight){
+                    mazeGrid[row][column].setBlockType(BlockType.AIR);
+                    indexes.add(column);
+                    cutRight = random.nextBoolean();
+                    if (cutRight){
+                        column++;
                         continue;
                     }else{
+                        Integer indexToCutOnNorth = indexes.get(random.nextInt(indexes.size()));
+                        mazeGrid[row-1][indexToCutOnNorth].setBlockType(BlockType.AIR);
 
-                        //Extra condition
-//                        if ((j+2) > (columns - 2)){
-//                            mazeGrid[i][j+1].setBlockType(BlockType.AIR);
-//                            indexesCleared.add(j+1);
-//                        }
-                        //
+                        if (mazeGrid[row-2][indexToCutOnNorth].getBlockType() == BlockType.WALL){
+                            mazeGrid[row-2][indexToCutOnNorth].setBlockType(BlockType.AIR);
+                        }
 
-                        int clearNorthIndex = random.nextInt(indexesCleared.size());
-                        int northIndex = indexesCleared.get(clearNorthIndex);
-                        mazeGrid[i-1][northIndex].setBlockType(BlockType.AIR);
-
-                        //Extra condition
-//                        if (mazeGrid[i-1][northIndex].getBlockType() == BlockType.WALL){
-//                            mazeGrid[i-1][northIndex-columns].setBlockType(BlockType.AIR);
-//                        }
-                        //
-
-                        j+= 2;
-                        indexesCleared = new LinkedList<>();
-                        break;
+                        column += 2;
                     }
                 }
+
             }
         }
 
