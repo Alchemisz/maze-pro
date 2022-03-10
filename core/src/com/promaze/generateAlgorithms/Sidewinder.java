@@ -32,6 +32,11 @@ public class Sidewinder implements MazeGenerator{
                     mazeGrid[row][column].setBlockType(BlockType.AIR);
                     indexes.add(column);
                     cutRight = random.nextBoolean();
+
+                    if ((column + 1) == (columns-1)){
+                        cutRight = false;
+                    }
+
                     if (cutRight){
                         column++;
                         continue;

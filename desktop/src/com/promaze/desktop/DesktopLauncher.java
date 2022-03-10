@@ -9,7 +9,7 @@ import com.promaze.mazepro;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		Maze maze = new Maze(9, 9);
+		Maze maze = new Maze(31, 31);
 		maze.applyAlgorithm(new Sidewinder());
 		maze.printMaze();
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
