@@ -1,4 +1,4 @@
-package com.promaze.desktop;
+package com.promaze;
 
 import lombok.Data;
 
