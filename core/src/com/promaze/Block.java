@@ -2,7 +2,7 @@ package com.promaze;
 
 import lombok.Data;
 
-@Data
+//@Data
 public class Block {
 
     private BlockType blockType;
@@ -11,6 +11,14 @@ public class Block {
     public Block(int x, int y) {
         this.x = x;
         this.y = y;
-        blockType = BlockType.WALL;
+        this.blockType = BlockType.WALL;
+    }
+
+    public BlockType getBlockType() {
+        return blockType;
+    }
+
+    public void setBlockType(BlockType blockType) {
+        this.blockType = blockType;
     }
 }
