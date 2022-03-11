@@ -3,21 +3,27 @@ package com.promaze.gui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.promaze.Block;
 import com.promaze.BlockType;
 import com.promaze.Maze;
+import com.promaze.generateAlgorithms.Sidewinder;
 
-public class mainGui {
+public class MainGui {
 
     private ShapeRenderer shapeRenderer;
-
+    private OurButton editButton,generateButton;
     public float block_size = 10; // SZEROKOSC I WYSOKOSC W JEDNYM NO LOL TO PRZECIE KWADRAT
     private boolean edit_mode = true;
+    private SpriteBatch batch;
 
-    public mainGui() {
+    public MainGui(SpriteBatch batch) {
+        this.batch = batch;
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
+        editButton = new OurButton(10,650,200,50,"EDIT",shapeRenderer);
+        generateButton = new OurButton(10,590,200,50,"GENERATE",shapeRenderer);
     }
 
     public void setEdit_mode(boolean edit_mode) {
@@ -33,12 +39,24 @@ public class mainGui {
     {
         Gdx.gl.glClearColor(0.4f, 0.4f, 0.4f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         drawMaze(calculate_center_width_for_maze(maze),calculate_center_height_for_maze(maze),maze);
+        editButton.draw(batch);
+        generateButton.draw(batch);
         shapeRenderer.end();
+        batch.end();
     }
 
+    public void update()
+    {
+        if(editButton.isPressed())changeEditMode();
+    }
 
+    public boolean checkGenerateButton()
+    {
+        return generateButton.isPressed();
+    }
 
     private void drawMaze(float x, float y ,Maze maze)
     {
