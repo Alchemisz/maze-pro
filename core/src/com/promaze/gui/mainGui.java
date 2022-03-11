@@ -12,7 +12,7 @@ public class mainGui {
 
     private ShapeRenderer shapeRenderer;
 
-    public int block_size = 10; // SZEROKOSC I WYSOKOSC W JEDNYM NO LOL TO PRZECIE KWADRAT
+    public float block_size = 10; // SZEROKOSC I WYSOKOSC W JEDNYM NO LOL TO PRZECIE KWADRAT
 
     public mainGui() {
         shapeRenderer = new ShapeRenderer();
@@ -29,7 +29,7 @@ public class mainGui {
 
 
 
-    private void drawMaze(int x, int y ,Maze maze)
+    private void drawMaze(float x, float y ,Maze maze)
     {
         calculate_optimal_block_size(maze);
 
@@ -53,13 +53,13 @@ public class mainGui {
 
     private void calculate_optimal_block_size(Maze maze)
     {
-        block_size = ((720 - 20) / maze.getMazeGrid().length);
+        block_size = ((720f - 20f) / (float) maze.getMazeGrid().length);
     }
-    private int calculate_center_height_for_maze(Maze maze)
+    private float calculate_center_height_for_maze(Maze maze)
     {
         return (720 - (maze.getMazeGrid().length)*block_size)/2;
     }
-    private int calculate_center_width_for_maze(Maze maze)
+    private float calculate_center_width_for_maze(Maze maze)
     {
         return (1280 - (maze.getMazeGrid().length)*block_size)/2;
     }
