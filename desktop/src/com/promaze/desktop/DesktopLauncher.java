@@ -12,6 +12,8 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 1280;
 		config.height = 720;
+		config.foregroundFPS = 60;
+		config.backgroundFPS = 60;
 		config.title = "MAZE PRO TESTOWA WERSJA. NACISNIJ SPACJE ABY WYGENEROWAC NOWY LABIRYNT";
 		new LwjglApplication(new mazepro(), config);
 	}

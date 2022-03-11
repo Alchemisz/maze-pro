@@ -13,9 +13,20 @@ public class mainGui {
     private ShapeRenderer shapeRenderer;
 
     public float block_size = 10; // SZEROKOSC I WYSOKOSC W JEDNYM NO LOL TO PRZECIE KWADRAT
+    private boolean edit_mode = true;
 
     public mainGui() {
         shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setAutoShapeType(true);
+    }
+
+    public void setEdit_mode(boolean edit_mode) {
+        this.edit_mode = edit_mode;
+    }
+
+    public void changeEditMode()
+    {
+        edit_mode = !edit_mode;
     }
 
     public void draw(Maze maze)
@@ -32,6 +43,7 @@ public class mainGui {
     private void drawMaze(float x, float y ,Maze maze)
     {
         calculate_optimal_block_size(maze);
+        Block highlighted = new Block(-1,-1); //do zapisu aktualnie podswietlonego bloczku, do wyswietlenia potem
 
         for (Block bArray[]:maze.getMazeGrid()){
             for(Block b:bArray) {
@@ -45,8 +57,28 @@ public class mainGui {
                         new Color(1.0f,1.0f,1.0f,1.0f),
                         new Color(1.0f,1.0f,1.0f,1.0f),
                         new Color(1.0f,1.0f,1.0f,1.0f));
+
+                if(edit_mode) {
+                    if (b.isHighlighted(b.getY() * block_size + x, b.getX() * block_size + y, block_size))
+                        highlighted = b;
+                    b.updateBlockType(b.getY() * block_size + x, b.getX() * block_size + y, block_size);
+                }
             }
         }
+
+        //musi byc rysowany podswietlony dopiero potem, bo inaczej nastepne go pokrywaja
+        if(edit_mode && highlighted.getX()!=-1)
+        {
+            Gdx.gl.glLineWidth(block_size/15);
+            shapeRenderer.set(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.rect(highlighted.getY() * block_size + x, 720 - (highlighted.getX() * block_size) - y - block_size, block_size, block_size,
+                    new Color(1.0f, 0.0f, 0.0f, 1.0f),
+                    new Color(1.0f, 0.0f, 0.0f, 1.0f),
+                    new Color(1.0f, 0.0f, 0.0f, 1.0f),
+                    new Color(1.0f, 0.0f, 0.0f, 1.0f));
+            shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
+        }
+
     }
 
     //Raczej tymczasowe funkcje, potem pewnie zrobie lepsze skalowanie
@@ -64,4 +96,21 @@ public class mainGui {
         return (1280 - (maze.getMazeGrid().length)*block_size)/2;
     }
 
+    private void drawTarget(float x, float y, float block_size, Block b)
+    {
+        shapeRenderer.rectLine(b.getY()*block_size + x,
+                720 - (b.getX()*block_size) - y - block_size,
+                block_size + b.getY()*block_size + x,
+                block_size + 720 - (b.getX()*block_size) - y - block_size,
+                block_size/10,
+                new Color(1.0f,0.0f,0.0f,0.0f),
+                new Color(1.0f,0.0f,0.0f,0.0f));
+        shapeRenderer.rectLine(block_size + b.getY()*block_size + x,
+                720 - (b.getX()*block_size) - y - block_size,
+                b.getY()*block_size + x,
+                block_size + 720 - (b.getX()*block_size) - y - block_size,
+                block_size/10,
+                new Color(1.0f,0.0f,0.0f,0.0f),
+                new Color(1.0f,0.0f,0.0f,0.0f));
+    }
 }
