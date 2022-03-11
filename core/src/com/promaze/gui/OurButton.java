@@ -12,6 +12,7 @@ public class OurButton {
     private Color border,content;
     private Color bright = new Color(0.3f,0.3f,0.3f,1f);
     private String text;
+    public boolean isActive = true;
 
     public void setText(String text) {
         this.text = text;
@@ -22,6 +23,8 @@ public class OurButton {
 
     public void draw(SpriteBatch batch)
     {
+        if(!isActive)return;
+
         Color temp = new Color();
         temp.add(content);
         temp.add(bright);
@@ -32,8 +35,11 @@ public class OurButton {
         else shapeRenderer.rect(x +border_thickness,y + border_thickness,width - border_thickness * 2,height - border_thickness * 2,
                 content,content,content,content);
 
+        shapeRenderer.end();
+        batch.begin();
         font.draw(batch,text,x - border_thickness,y + border_thickness + height/2,width,1,false);
-
+        batch.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
     }
 
     public OurButton(int x, int y, int width, int height, Color border, Color content, String text, ShapeRenderer shapeRenderer) {
@@ -49,6 +55,7 @@ public class OurButton {
 
     public boolean isPressed()
     {
+        if(!isActive)return false;
         return isHighlighted() && Gdx.input.justTouched();
     }
 

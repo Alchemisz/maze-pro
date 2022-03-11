@@ -11,9 +11,7 @@ public class mazepro extends ApplicationAdapter {
 	SpriteBatch batch;
 	MainGui gui;
 	Maze maze;
-
-
-	int temp = 11;
+	int mazeSize = 11;
 
 	@Override
 	public void create () {
@@ -27,11 +25,19 @@ public class mazepro extends ApplicationAdapter {
 	public void render () {
 		gui.update();
 		gui.draw(maze);
-		if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || gui.checkGenerateButton()) //TESTOWANIE
+		if(gui.buttonListener().equals("GENINC")) {
+			mazeSize += 2;
+			gui.generateButton.setText("GENERATE (SIZE "+ mazeSize +")");
+		}
+		if(gui.buttonListener().equals("GENDEC")) {
+			mazeSize = (mazeSize >= 7) ? (mazeSize - 2) : mazeSize;
+			gui.generateButton.setText("GENERATE (SIZE "+ mazeSize +")");
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || gui.buttonListener().equals("GENBUTTON")) //TESTOWANIE
 		{
-			maze = new Maze(temp,temp);
+			maze = new Maze(mazeSize, mazeSize);
 			maze.applyAlgorithm(new Sidewinder());
-			temp+=2;
+			gui.generateButton.setText("GENERATE (SIZE "+ mazeSize +")");
 		}
 	}
 

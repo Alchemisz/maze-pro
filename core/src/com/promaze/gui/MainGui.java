@@ -13,7 +13,7 @@ import com.promaze.generateAlgorithms.Sidewinder;
 public class MainGui {
 
     private ShapeRenderer shapeRenderer;
-    private OurButton editButton,generateButton;
+    public OurButton editButton,generateButton,genIncButton,genDecButton;
     public float block_size = 10; // SZEROKOSC I WYSOKOSC W JEDNYM NO LOL TO PRZECIE KWADRAT
     private boolean edit_mode = true;
     private SpriteBatch batch;
@@ -22,8 +22,11 @@ public class MainGui {
         this.batch = batch;
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
-        editButton = new OurButton(10,650,200,50,"EDIT",shapeRenderer);
-        generateButton = new OurButton(10,590,200,50,"GENERATE",shapeRenderer);
+        editButton = new OurButton(10,650,270,50,"EDIT MODE:ON",shapeRenderer);
+        generateButton = new OurButton(45,590,200,50,"GENERATE (SIZE 11)",shapeRenderer);
+        genDecButton = new OurButton(10,590,35,50,"-",shapeRenderer);
+        genIncButton = new OurButton(245,590,35,50,"+",shapeRenderer);
+
     }
 
     public void setEdit_mode(boolean edit_mode) {
@@ -37,30 +40,41 @@ public class MainGui {
 
     public void draw(Maze maze)
     {
+        calculate_optimal_block_size(maze);
         Gdx.gl.glClearColor(0.4f, 0.4f, 0.4f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         drawMaze(calculate_center_width_for_maze(maze),calculate_center_height_for_maze(maze),maze);
         editButton.draw(batch);
         generateButton.draw(batch);
+        genIncButton.draw(batch);
+        genDecButton.draw(batch);
         shapeRenderer.end();
-        batch.end();
     }
 
     public void update()
     {
-        if(editButton.isPressed())changeEditMode();
+        if(editButton.isPressed()) {
+            changeEditMode();
+            editButton.setText((edit_mode)?"EDIT MODE:ON":"EDIT MODE:OFF");
+            generateButton.isActive = !generateButton.isActive;
+            genIncButton.isActive = !genIncButton.isActive;
+            genDecButton.isActive = !genDecButton.isActive;
+        }
+
     }
 
-    public boolean checkGenerateButton()
+    public String buttonListener()
     {
-        return generateButton.isPressed();
+        //dla funkcji niezwiazanych z gui (WIEM ZE BEZNADZIEJNE KACPI PROSZE NIE WYZYWAJ JEST 23 52 KIEDY PISZE TEN KOD)
+        if(generateButton.isPressed())return "GENBUTTON";
+        if(genDecButton.isPressed())return "GENDEC";
+        if(genIncButton.isPressed())return "GENINC";
+        return "";
     }
 
     private void drawMaze(float x, float y ,Maze maze)
     {
-        calculate_optimal_block_size(maze);
         Block highlighted = new Block(-1,-1); //do zapisu aktualnie podswietlonego bloczku, do wyswietlenia potem
 
         for (Block bArray[]:maze.getMazeGrid()){
