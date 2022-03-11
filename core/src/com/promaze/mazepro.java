@@ -6,13 +6,20 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.promaze.generateAlgorithms.Sidewinder;
 import com.promaze.gui.mainGui;
+
+import java.awt.*;
 
 public class mazepro extends ApplicationAdapter {
 	SpriteBatch batch;
 	mainGui gui;
 	Maze maze;
+
+
+	int temp = 11;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -26,8 +33,10 @@ public class mazepro extends ApplicationAdapter {
 		gui.draw(maze);
 		if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) //TESTOWANIE
 		{
-			maze = new Maze(201,201);
+			maze = new Maze(temp,temp);
 			maze.applyAlgorithm(new Sidewinder());
+			maze.printMaze();
+			temp+=2;
 		}
 	}
 
