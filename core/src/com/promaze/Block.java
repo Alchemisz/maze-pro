@@ -21,4 +21,12 @@ public class Block {
     public void setBlockType(BlockType blockType) {
         this.blockType = blockType;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }

@@ -37,4 +37,7 @@ public class Maze{
         }
     }
 
+    public Block[][] getMazeGrid() {
+        return mazeGrid;
+    }
 }
