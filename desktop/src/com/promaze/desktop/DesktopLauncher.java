@@ -6,6 +6,7 @@ import com.promaze.BlockType;
 import com.promaze.Maze;
 import com.promaze.generateAlgorithms.Sidewinder;
 import com.promaze.mazepro;
+import net.spookygames.gdx.nativefilechooser.desktop.DesktopFileChooser;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -16,6 +17,6 @@ public class DesktopLauncher {
 		config.backgroundFPS = 60;
 		config.resizable = false;
 		config.title = "MAZE PRO TESTOWA WERSJA 0.2";
-		new LwjglApplication(new mazepro(), config);
+		new LwjglApplication(new mazepro(new DesktopFileChooser()), config);
 	}
 }
