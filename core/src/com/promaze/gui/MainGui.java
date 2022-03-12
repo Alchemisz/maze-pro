@@ -13,7 +13,8 @@ import com.promaze.generateAlgorithms.Sidewinder;
 public class MainGui {
 
     private ShapeRenderer shapeRenderer;
-    public OurButton editButton,generateButton,genIncButton,genDecButton;
+    public OurButton editButton,generateButton,genIncButton,genDecButton
+            ,saveMazeBtn,loadMazeBtn;
     public float block_size = 10; // SZEROKOSC I WYSOKOSC W JEDNYM NO LOL TO PRZECIE KWADRAT
     private boolean edit_mode = true;
     private SpriteBatch batch;
@@ -26,6 +27,8 @@ public class MainGui {
         generateButton = new OurButton(45,590,200,50,"GENERATE (SIZE 11)",shapeRenderer);
         genDecButton = new OurButton(10,590,35,50,"-",shapeRenderer);
         genIncButton = new OurButton(245,590,35,50,"+",shapeRenderer);
+        saveMazeBtn = new OurButton(10,530,270,50,"SAVE MAZE",shapeRenderer);
+        loadMazeBtn = new OurButton(10,470,270,50,"LOAD MAZE",shapeRenderer);
 
     }
 
@@ -49,6 +52,8 @@ public class MainGui {
         generateButton.draw(batch);
         genIncButton.draw(batch);
         genDecButton.draw(batch);
+        saveMazeBtn.draw(batch);
+        loadMazeBtn.draw(batch);
         shapeRenderer.end();
     }
 
@@ -70,6 +75,8 @@ public class MainGui {
         if(generateButton.isPressed())return "GENBUTTON";
         if(genDecButton.isPressed())return "GENDEC";
         if(genIncButton.isPressed())return "GENINC";
+        if (saveMazeBtn.isPressed()) return "SAVE_MAZE";
+        if (loadMazeBtn.isPressed()) return "LOAD_MAZE";
         return "";
     }
 
