@@ -15,7 +15,7 @@ public class RecurrentSolver implements Solver {
     public List<Maze> solve(Maze maze) {
         int[] neighbours = {0,1,
                 1, 0,
-                0, -1
+                0, -1,
                 -1, 0};
 
         List<Maze> steps = new ArrayList<>();
@@ -40,20 +40,21 @@ public class RecurrentSolver implements Solver {
             Block currentBlock = queue.pop();
             grid[agent.getX()][agent.getY()].setBlockType(BlockType.VISITED);
             agent = currentBlock;
+            if(agent.getBlockType().equals(BlockType.END)) {
+                return steps;
+            }
             grid[agent.getX()][agent.getY()].setBlockType(BlockType.AGENT);
 
             Maze currentMaze = new Maze(grid);
             steps.add(currentMaze);
 
-            if(agent.getBlockType().equals(BlockType.END) && agent.getBlockType().equals(BlockType.END)) {
-                return steps;
-            }
+
 
             for(int i=0; i<8; i+=2) {
                 int _x = agent.getX() + neighbours[i];
-                int _y = agent.getY() + neighbours[i]+1;
+                int _y = agent.getY() + neighbours[i+1];
 
-                if(visitedMap[_x][_y] < 1 && (_x >= 0 && _y >= 0 && _x < grid.length && _y < grid[0].length)) {
+                if((_x >= 0 && _y >= 0 && _x < grid.length && _y < grid[0].length) && visitedMap[_x][_y] < 1) {
                     if(!grid[_x][_y].getBlockType().equals(BlockType.WALL)) {
                         visitedMap[_x][_y] = 1;
                         queue.add(grid[_x][_y]);
