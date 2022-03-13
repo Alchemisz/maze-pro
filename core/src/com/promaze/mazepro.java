@@ -51,7 +51,7 @@ public class mazepro extends ApplicationAdapter{
 		}
 
 		if (gui.buttonListener().equals("SAVE_MAZE")){
-			System.out.println("Saving....");
+			new FileManager(fileChooser).saveMaze(maze);
 		}
 
 		if (gui.buttonListener().equals("LOAD_MAZE")){

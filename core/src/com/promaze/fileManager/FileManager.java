@@ -7,8 +7,9 @@ import net.spookygames.gdx.nativefilechooser.NativeFileChooser;
 import net.spookygames.gdx.nativefilechooser.NativeFileChooserCallback;
 import net.spookygames.gdx.nativefilechooser.NativeFileChooserConfiguration;
 
-import java.io.File;
-import java.io.FilenameFilter;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.*;
 
 public class FileManager {
 
@@ -53,6 +54,32 @@ public class FileManager {
                 // Handle error (hint: use exception type)
             }
         });
+    }
+
+    public void saveMaze(Maze maze){
+        JFileChooser fileChooser = null;
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            fileChooser = new JFileChooser();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+
+            String str = "Hello";
+            BufferedWriter writer = null;
+            try {
+                writer = new BufferedWriter(new FileWriter(file));
+                writer.write(str);
+
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
