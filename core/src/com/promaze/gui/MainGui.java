@@ -112,6 +112,12 @@ public class MainGui {
                             new Color(1.0f,1.0f,0.0f,1.0f),
                             new Color(1.0f,1.0f,0.0f,1.0f),
                             new Color(1.0f,1.0f,0.0f,1.0f));
+                else if(b.getBlockType().equals(BlockType.PATH))
+                    shapeRenderer.rect(b.getY()*block_size + x,720 - (b.getX()*block_size) - y - block_size,block_size,block_size,
+                            new Color(1.0f,0.0f,0.0f,1.0f),
+                            new Color(1.0f,0.0f,0.0f,1.0f),
+                            new Color(1.0f,0.0f,0.0f,1.0f),
+                            new Color(1.0f,0.0f,0.0f,1.0f));
                 else shapeRenderer.rect(b.getY()*block_size + x,720 - (b.getX()*block_size) - y - block_size,block_size,block_size,
                         new Color(1.0f,1.0f,1.0f,1.0f),
                         new Color(1.0f,1.0f,1.0f,1.0f),
