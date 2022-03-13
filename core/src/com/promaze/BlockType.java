@@ -1,5 +1,5 @@
 package com.promaze;
 
 public enum BlockType {
-    AIR, WALL
+    AIR, WALL, AGENT, END, VISITED
 }

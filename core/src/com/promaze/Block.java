@@ -16,7 +16,6 @@ public class Block extends ClickListener {
         this.x = x;
         this.y = y;
         this.blockType = BlockType.WALL;
-
     }
 
     public BlockType getBlockType() {
@@ -62,5 +61,11 @@ public class Block extends ClickListener {
             if(y<mouseY && mouseY<y2)
                 return true;
         return false;
+    }
+
+    public Block clone() {
+        Block block = new Block(this.x, this.y);
+        block.setBlockType(this.blockType);
+        return block;
     }
 }
