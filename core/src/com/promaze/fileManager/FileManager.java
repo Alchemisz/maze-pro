@@ -2,14 +2,18 @@ package com.promaze.fileManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.promaze.Block;
+import com.promaze.BlockType;
 import com.promaze.Maze;
 import net.spookygames.gdx.nativefilechooser.NativeFileChooser;
 import net.spookygames.gdx.nativefilechooser.NativeFileChooserCallback;
 import net.spookygames.gdx.nativefilechooser.NativeFileChooserConfiguration;
+import org.graalvm.compiler.hotspot.stubs.OutOfBoundsExceptionStub;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
+import java.util.Arrays;
 
 public class FileManager {
 
@@ -19,13 +23,11 @@ public class FileManager {
         this.fileChooser = fileChooser;
     }
 
-    public void loadMaze(Maze maze){
-        // Configure
+    public void loadMaze(final Maze maze){
         NativeFileChooserConfiguration conf = new NativeFileChooserConfiguration();
-        // Starting from user's dir
+
         conf.directory = Gdx.files.absolute(System.getProperty("user.home"));
 
-        // Filter out all files which do not have the .ogg extension and are not of an audio MIME type - belt and braces
         conf.mimeFilter = "audio/*";
         conf.nameFilter = new FilenameFilter() {
             @Override
@@ -34,53 +36,96 @@ public class FileManager {
             }
         };
 
-        // Add a nice title
         conf.title = "Choose file";
 
         fileChooser.chooseFile(conf, new NativeFileChooserCallback() {
             @Override
             public void onFileChosen(FileHandle file) {
-                // Do stuff with file, yay!
-                System.out.println("No implementation!");
+                Block[][] blocks = loadFromFile(file);
+                maze.setMazeGrid(blocks);
+
             }
 
             @Override
             public void onCancellation() {
-                // Warn user how rude it can be to cancel developer's effort
+
             }
 
             @Override
             public void onError(Exception exception) {
-                // Handle error (hint: use exception type)
+
             }
         });
     }
 
     public void saveMaze(Maze maze){
-        JFileChooser fileChooser = null;
-
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            fileChooser = new JFileChooser();
+            JFileChooser fileChooser = new JFileChooser();
+
+            if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+
+                //if not end with .txt then set the .txt extension
+                if (!file.getName().endsWith(".txt")){
+                    file = new File(file.getAbsolutePath() + ".txt");
+                }
+
+                saveToFile(file, maze);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
+    private void saveToFile(File file, Maze maze){
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(file));
 
-            String str = "Hello";
-            BufferedWriter writer = null;
-            try {
-                writer = new BufferedWriter(new FileWriter(file));
-                writer.write(str);
-
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            for (int row = 0; row < maze.getMazeGrid().length; row++) {
+                for (int column = 0; column < maze.getMazeGrid().length; column++) {
+                    writer.write(maze.getMazeGrid()[row][column].toString());
+                }
             }
-        }
 
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            System.out.println("ERROR! saveToFile method");
+        }
+    }
+
+    private Block[][] loadFromFile(FileHandle file) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file.file().getAbsolutePath()));
+
+            int counter = 0;
+            while (reader.readLine() != null){
+                counter++;
+            }
+            int length = (int) Math.sqrt(counter);
+
+            reader = new BufferedReader(new FileReader(file.file().getAbsolutePath()));
+
+            Block[][] newMazeGrid = new Block[length][length];
+
+            for (int row = 0; row < length; row++) {
+                for (int column = 0; column < length; column++) {
+                    String line = reader.readLine();
+                    String[] singleBlockElements = line.split(";");
+                    newMazeGrid[row][column] = new Block(singleBlockElements);
+                }
+            }
+
+            return newMazeGrid;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

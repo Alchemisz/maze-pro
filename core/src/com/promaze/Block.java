@@ -19,6 +19,12 @@ public class Block extends ClickListener {
 
     }
 
+    public Block(String[] singleBlockElements) {
+        this.blockType = BlockType.valueOf(singleBlockElements[0]);
+        this.x = Integer.parseInt(singleBlockElements[1]);
+        this.y = Integer.parseInt(singleBlockElements[2]);
+    }
+
     public BlockType getBlockType() {
         return blockType;
     }
@@ -62,5 +68,10 @@ public class Block extends ClickListener {
             if(y<mouseY && mouseY<y2)
                 return true;
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return this.blockType.name() + ";" + this.x + ";" + this.y + "\n";
     }
 }
