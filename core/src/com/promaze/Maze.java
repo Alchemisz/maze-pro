@@ -65,4 +65,8 @@ public class Maze{
     public Block[][] getMazeGrid() {
         return mazeGrid;
     }
+
+    public void setMazeGrid(Block[][] mazeGrid) {
+        this.mazeGrid = mazeGrid;
+    }
 }

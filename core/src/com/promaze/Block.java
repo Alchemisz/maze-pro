@@ -18,6 +18,12 @@ public class Block extends ClickListener {
         this.blockType = BlockType.WALL;
     }
 
+    public Block(String[] singleBlockElements) {
+        this.blockType = BlockType.valueOf(singleBlockElements[0]);
+        this.x = Integer.parseInt(singleBlockElements[1]);
+        this.y = Integer.parseInt(singleBlockElements[2]);
+    }
+
     public BlockType getBlockType() {
         return blockType;
     }
@@ -33,7 +39,6 @@ public class Block extends ClickListener {
     public int getY() {
         return y;
     }
-
 
     public void updateBlockType(float x, float y, float size)
     {
@@ -67,5 +72,10 @@ public class Block extends ClickListener {
         Block block = new Block(this.x, this.y);
         block.setBlockType(this.blockType);
         return block;
+    }
+
+    @Override
+    public String toString() {
+        return this.blockType.name() + ";" + this.x + ";" + this.y + "\n";
     }
 }
