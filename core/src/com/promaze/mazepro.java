@@ -67,7 +67,13 @@ public class mazepro extends ApplicationAdapter{
 
 		if (gui.buttonListener().equals("SOLVE_MAZE")){
 			Solver solver = new RecurrentSolver();
+
+			Stopwatch stopwatch = new StopwatchImpl();
+			stopwatch.start();
 			List<Maze> steps = solver.solve(maze);
+			TimeCycle timeCycle = stopwatch.stop();
+			System.out.println(timeCycle);
+
 			if(!steps.isEmpty()) {
 				maze = steps.get(steps.size()-1);
 			}
