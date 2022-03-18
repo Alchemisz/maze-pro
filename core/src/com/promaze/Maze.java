@@ -2,11 +2,24 @@ package com.promaze;
 
 import com.promaze.generateAlgorithms.MazeGenerator;
 
+import java.util.Arrays;
+
 public class Maze{
 
     private Integer rows;
     private Integer columns;
     private Block[][] mazeGrid;
+
+    public Maze(Block[][] mazeGrid) {
+        this.rows = mazeGrid.length;
+        this.columns = mazeGrid[0].length;
+        this.mazeGrid = new Block[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                this.mazeGrid[i][j] = mazeGrid[i][j].clone();
+            }
+        }
+    }
 
     public Maze(Integer rows, Integer columns) {
         this.mazeGrid = new Block[rows][columns];
@@ -21,6 +34,18 @@ public class Maze{
                 this.mazeGrid[i][j] = new Block(i, j);
             }
         }
+    }
+
+    public Block getAgentPosition() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                Block currentBlock = this.mazeGrid[i][j];
+                if(currentBlock.getBlockType().equals(BlockType.AGENT)) {
+                    return currentBlock;
+                }
+            }
+        }
+        return new Block(-1, -1);
     }
 
     public void applyAlgorithm(MazeGenerator mazeGenerator){

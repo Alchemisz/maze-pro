@@ -9,12 +9,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.promaze.fileManager.FileManager;
 import com.promaze.generateAlgorithms.Sidewinder;
 import com.promaze.gui.MainGui;
+import com.promaze.solvers.RecurrentSolver;
+import com.promaze.solvers.Solver;
+import com.promaze.tools.stopwatch.Stopwatch;
+import com.promaze.tools.stopwatch.StopwatchImpl;
+import com.promaze.tools.stopwatch.TimeCycle;
 import net.spookygames.gdx.nativefilechooser.NativeFileChooser;
 import net.spookygames.gdx.nativefilechooser.NativeFileChooserCallback;
 import net.spookygames.gdx.nativefilechooser.NativeFileChooserConfiguration;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.List;
+import java.util.Random;
 
 public class mazepro extends ApplicationAdapter{
 	SpriteBatch batch;
@@ -58,10 +65,28 @@ public class mazepro extends ApplicationAdapter{
 			new FileManager(fileChooser).loadMaze(maze);
 		}
 
+		if (gui.buttonListener().equals("SOLVE_MAZE")){
+			Solver solver = new RecurrentSolver();
+			List<Maze> steps = solver.solve(maze);
+			if(!steps.isEmpty()) {
+				maze = steps.get(steps.size()-1);
+			}
+		}
+
 		if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || gui.buttonListener().equals("GENBUTTON")) //TESTOWANIE
 		{
 			maze = new Maze(mazeSize, mazeSize);
 			maze.applyAlgorithm(new Sidewinder());
+			//UWAGA BOMBA
+			Block[][] grid = maze.getMazeGrid();
+			Random random = new Random();
+			int _x1 = Math.abs(random.nextInt())%grid.length;
+			int _x2 = Math.abs(random.nextInt())%grid.length;
+			int _y1 = Math.abs(random.nextInt())%grid.length;
+			int _y2 = Math.abs(random.nextInt())%grid.length;
+			grid[_x1][_y1].setBlockType(BlockType.AGENT);
+			grid[_x2][_y2].setBlockType(BlockType.END);
+			//KONIEC
 			gui.generateButton.setText("GENERATE (SIZE "+ mazeSize +")");
 		}
 	}

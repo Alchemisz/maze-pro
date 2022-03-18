@@ -14,7 +14,7 @@ public class MainGui {
 
     private ShapeRenderer shapeRenderer;
     public OurButton editButton,generateButton,genIncButton,genDecButton
-            ,saveMazeBtn,loadMazeBtn;
+            ,saveMazeBtn,loadMazeBtn,solveBtn;
     public float block_size = 10; // SZEROKOSC I WYSOKOSC W JEDNYM NO LOL TO PRZECIE KWADRAT
     private boolean edit_mode = true;
     private SpriteBatch batch;
@@ -29,7 +29,7 @@ public class MainGui {
         genIncButton = new OurButton(245,590,35,50,"+",shapeRenderer);
         saveMazeBtn = new OurButton(10,530,270,50,"SAVE MAZE",shapeRenderer);
         loadMazeBtn = new OurButton(10,470,270,50,"LOAD MAZE",shapeRenderer);
-
+        solveBtn = new OurButton(10,400,270,50,"SOLVE",shapeRenderer);
     }
 
     public void setEdit_mode(boolean edit_mode) {
@@ -54,6 +54,7 @@ public class MainGui {
         genDecButton.draw(batch);
         saveMazeBtn.draw(batch);
         loadMazeBtn.draw(batch);
+        solveBtn.draw(batch);
         shapeRenderer.end();
     }
 
@@ -77,6 +78,7 @@ public class MainGui {
         if(genIncButton.isPressed())return "GENINC";
         if (saveMazeBtn.isPressed()) return "SAVE_MAZE";
         if (loadMazeBtn.isPressed()) return "LOAD_MAZE";
+        if(solveBtn.isPressed()) return "SOLVE_MAZE";
         return "";
     }
 
@@ -86,11 +88,36 @@ public class MainGui {
 
         for (Block bArray[]:maze.getMazeGrid()){
             for(Block b:bArray) {
-                if(b.getBlockType().equals(BlockType.WALL))shapeRenderer.rect(b.getY()*block_size + x,720 - (b.getX()*block_size) - y - block_size,block_size,block_size,
+                if(b.getBlockType().equals(BlockType.WALL))
+                    shapeRenderer.rect(b.getY()*block_size + x,720 - (b.getX()*block_size) - y - block_size,block_size,block_size,
                         new Color(0.0f,0.0f,0.0f,1.0f),
                         new Color(0.0f,0.0f,0.0f,1.0f),
                         new Color(0.0f,0.0f,0.0f,1.0f),
                         new Color(0.0f,0.0f,0.0f,1.0f));
+                else if(b.getBlockType().equals(BlockType.AGENT))
+                    shapeRenderer.rect(b.getY()*block_size + x,720 - (b.getX()*block_size) - y - block_size,block_size,block_size,
+                            new Color(0.0f,1.0f,0.0f,1.0f),
+                            new Color(0.0f,1.0f,0.0f,1.0f),
+                            new Color(0.0f,1.0f,0.0f,1.0f),
+                            new Color(0.0f,1.0f,0.0f,1.0f));
+                else if(b.getBlockType().equals(BlockType.VISITED))
+                    shapeRenderer.rect(b.getY()*block_size + x,720 - (b.getX()*block_size) - y - block_size,block_size,block_size,
+                            new Color(1.0f,0.7f,0.0f,1.0f),
+                            new Color(1.0f,0.7f,0.0f,1.0f),
+                            new Color(1.0f,0.7f,0.0f,1.0f),
+                            new Color(1.0f,0.7f,0.0f,1.0f));
+                else if(b.getBlockType().equals(BlockType.END))
+                    shapeRenderer.rect(b.getY()*block_size + x,720 - (b.getX()*block_size) - y - block_size,block_size,block_size,
+                            new Color(1.0f,1.0f,0.0f,1.0f),
+                            new Color(1.0f,1.0f,0.0f,1.0f),
+                            new Color(1.0f,1.0f,0.0f,1.0f),
+                            new Color(1.0f,1.0f,0.0f,1.0f));
+                else if(b.getBlockType().equals(BlockType.PATH))
+                    shapeRenderer.rect(b.getY()*block_size + x,720 - (b.getX()*block_size) - y - block_size,block_size,block_size,
+                            new Color(1.0f,0.0f,0.0f,1.0f),
+                            new Color(1.0f,0.0f,0.0f,1.0f),
+                            new Color(1.0f,0.0f,0.0f,1.0f),
+                            new Color(1.0f,0.0f,0.0f,1.0f));
                 else shapeRenderer.rect(b.getY()*block_size + x,720 - (b.getX()*block_size) - y - block_size,block_size,block_size,
                         new Color(1.0f,1.0f,1.0f,1.0f),
                         new Color(1.0f,1.0f,1.0f,1.0f),
