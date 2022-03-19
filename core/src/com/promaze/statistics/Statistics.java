@@ -39,4 +39,11 @@ public class Statistics {
     public List<StatisticItem> getStatisticItems() {
         return this.statisticItems;
     }
+
+    @Override
+    public String toString() {
+        return "Statistics{" +
+                "statisticItems=" + statisticItems +
+                '}';
+    }
 }

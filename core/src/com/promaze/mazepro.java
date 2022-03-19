@@ -11,6 +11,8 @@ import com.promaze.generateAlgorithms.Sidewinder;
 import com.promaze.gui.MainGui;
 import com.promaze.solvers.RecurrentSolver;
 import com.promaze.solvers.Solver;
+import com.promaze.statistics.StatisticItem;
+import com.promaze.statistics.Statistics;
 import com.promaze.tools.stopwatch.Stopwatch;
 import com.promaze.tools.stopwatch.StopwatchImpl;
 import com.promaze.tools.stopwatch.TimeCycle;
@@ -28,11 +30,13 @@ public class mazepro extends ApplicationAdapter{
 	MainGui gui;
 	Maze maze;
 	int mazeSize = 11;
+	Statistics statistics;
 
 	NativeFileChooser fileChooser;
 	public mazepro(NativeFileChooser fileChooser) {
 		super();
 		this.fileChooser = fileChooser;
+		statistics = new Statistics();
 	}
 
 
@@ -73,6 +77,10 @@ public class mazepro extends ApplicationAdapter{
 			List<Maze> steps = solver.solve(maze);
 			TimeCycle timeCycle = stopwatch.stop();
 			System.out.println(timeCycle);
+
+
+			this.statistics.addStatisticItem(new StatisticItem(timeCycle));
+			System.out.println(statistics);
 
 			if(!steps.isEmpty()) {
 				maze = steps.get(steps.size()-1);

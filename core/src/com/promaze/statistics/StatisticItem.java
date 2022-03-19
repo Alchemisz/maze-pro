@@ -13,4 +13,11 @@ public class StatisticItem {
     public TimeCycle getTimeCycle() {
         return timeCycle;
     }
+
+    @Override
+    public String toString() {
+        return "StatisticItem{" +
+                "timeCycle=" + timeCycle +
+                '}';
+    }
 }
