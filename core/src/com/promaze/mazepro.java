@@ -69,9 +69,12 @@ public class mazepro extends ApplicationAdapter{
 			new FileManager(fileChooser).loadMaze(maze);
 		}
 
+		if (gui.buttonListener().equals("CLEAR_PATH")){
+			maze.removePaths();
+		}
+
 		if (gui.buttonListener().equals("SOLVE_MAZE")){
 			Solver solver = new RecurrentSolver();
-
 			Stopwatch stopwatch = new StopwatchImpl();
 			stopwatch.start();
 			List<Maze> steps = solver.solve(maze);

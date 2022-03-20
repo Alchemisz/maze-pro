@@ -16,7 +16,7 @@ public class MainGui {
 
     private ShapeRenderer shapeRenderer;
     public OurButton editButton,generateButton,genIncButton,genDecButton
-            ,saveMazeBtn,loadMazeBtn,solveBtn,clearStatisticsButton, sortStatisticsButton, editAgentBtn,editDestinationBtn,editModeBtn;
+            ,saveMazeBtn,loadMazeBtn,solveBtn,clearStatisticsButton, sortStatisticsButton, editAgentBtn,editDestinationBtn,editModeBtn,clearPathBtn;
     public float block_size = 10; // SZEROKOSC I WYSOKOSC W JEDNYM NO LOL TO PRZECIE KWADRAT
     private boolean edit_mode = true;
     private edit_type edit_mode_type = EDIT;
@@ -40,6 +40,7 @@ public class MainGui {
         editModeBtn = new OurButton(10,470,90,50,"EDIT",shapeRenderer);
         editAgentBtn = new OurButton(10 + 90 ,470,90,50,"SET\nAGENT",shapeRenderer);
         editDestinationBtn = new OurButton(10 + 90 * 2,470,90,50,"SET\nTARGET",shapeRenderer);
+        clearPathBtn = new OurButton(10 ,425,270,35,"CLEAR PATHS",shapeRenderer);
 
         editModeBtn.setEnabled(true);
         editAgentBtn.setTextOffsetY(10);
@@ -80,6 +81,7 @@ public class MainGui {
         editModeBtn.draw(batch);
         editAgentBtn.draw(batch);
         editDestinationBtn.draw(batch);
+        clearPathBtn.draw(batch);
         statisticsGui.draw(1000,10);
         shapeRenderer.end();
     }
@@ -89,6 +91,7 @@ public class MainGui {
         if(editButton.isPressed()) {
             changeEditMode();
             editButton.setEnabled(edit_mode);
+            //FUJKA
             generateButton.isActive = !generateButton.isActive;
             genIncButton.isActive = !genIncButton.isActive;
             genDecButton.isActive = !genDecButton.isActive;
@@ -97,6 +100,7 @@ public class MainGui {
             editDestinationBtn.isActive = !editDestinationBtn.isActive;
             saveMazeBtn.isActive = !saveMazeBtn.isActive;
             loadMazeBtn.isActive = !loadMazeBtn.isActive;
+            clearPathBtn.isActive = !clearPathBtn.isActive;
         }
         if(clearStatisticsButton.isPressed())
         {
@@ -139,6 +143,7 @@ public class MainGui {
         if (saveMazeBtn.isPressed()) return "SAVE_MAZE";
         if (loadMazeBtn.isPressed()) return "LOAD_MAZE";
         if(solveBtn.isPressed()) return "SOLVE_MAZE";
+        if(clearPathBtn.isPressed()) return "CLEAR_PATH";
         return "";
     }
 

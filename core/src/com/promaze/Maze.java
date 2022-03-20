@@ -89,6 +89,18 @@ public class Maze{
             }
         }
     }
+    public void removePaths()
+    {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                Block currentBlock = this.mazeGrid[i][j];
+                if(currentBlock.getBlockType().equals(BlockType.PATH) || currentBlock.getBlockType().equals(BlockType.VISITED)) {
+                    currentBlock.setBlockType(BlockType.AIR);
+                }
+            }
+        }
+
+    }
 
 
     public Block[][] getMazeGrid() {
