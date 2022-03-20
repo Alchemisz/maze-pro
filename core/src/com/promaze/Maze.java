@@ -21,6 +21,11 @@ public class Maze{
         }
     }
 
+    public int getSize()
+    {
+        return rows;
+    }
+
     public Maze(Integer rows, Integer columns) {
         this.mazeGrid = new Block[rows][columns];
         this.rows = rows;

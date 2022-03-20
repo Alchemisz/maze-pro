@@ -12,9 +12,9 @@ public class StatisticsTest {
     public void sort(){
 
         Statistics statistics = new Statistics();
-        statistics.addStatisticItem(new StatisticItem(new TimeCycle(1000)));
-        statistics.addStatisticItem(new StatisticItem(new TimeCycle(3000)));
-        statistics.addStatisticItem(new StatisticItem(new TimeCycle(2000)));
+        statistics.addStatisticItem(new StatisticItem(new TimeCycle(1000),1));
+        statistics.addStatisticItem(new StatisticItem(new TimeCycle(3000),1));
+        statistics.addStatisticItem(new StatisticItem(new TimeCycle(2000),1));
 
         statistics.sort();
 
@@ -30,9 +30,9 @@ public class StatisticsTest {
     public void sortByTimeCycle(){
 
         Statistics statistics = new Statistics();
-        statistics.addStatisticItem(new StatisticItem(new TimeCycle(1000)));
-        statistics.addStatisticItem(new StatisticItem(new TimeCycle(3000)));
-        statistics.addStatisticItem(new StatisticItem(new TimeCycle(2000)));
+        statistics.addStatisticItem(new StatisticItem(new TimeCycle(1000),1));
+        statistics.addStatisticItem(new StatisticItem(new TimeCycle(3000),1));
+        statistics.addStatisticItem(new StatisticItem(new TimeCycle(2000),1));
 
         statistics.sortBy(SortStatisticsType.TIME_CYCLE, false);
 
@@ -47,9 +47,9 @@ public class StatisticsTest {
     public void sortByTimeCycleReverse(){
 
         Statistics statistics = new Statistics();
-        statistics.addStatisticItem(new StatisticItem(new TimeCycle(1000)));
-        statistics.addStatisticItem(new StatisticItem(new TimeCycle(3000)));
-        statistics.addStatisticItem(new StatisticItem(new TimeCycle(2000)));
+        statistics.addStatisticItem(new StatisticItem(new TimeCycle(1000),1));
+        statistics.addStatisticItem(new StatisticItem(new TimeCycle(3000),1));
+        statistics.addStatisticItem(new StatisticItem(new TimeCycle(2000),1));
 
         statistics.sortBy(SortStatisticsType.TIME_CYCLE, true);
 

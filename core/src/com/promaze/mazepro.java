@@ -45,7 +45,7 @@ public class mazepro extends ApplicationAdapter{
 		batch = new SpriteBatch();
 		maze = new Maze(51, 51);
 		maze.applyAlgorithm(new Sidewinder());
-		gui = new MainGui(batch);
+		gui = new MainGui(batch,statistics);
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class mazepro extends ApplicationAdapter{
 			System.out.println(timeCycle);
 
 
-			this.statistics.addStatisticItem(new StatisticItem(timeCycle));
+			this.statistics.addStatisticItem(new StatisticItem(timeCycle,maze.getSize()));
 			System.out.println(statistics);
 
 			if(!steps.isEmpty()) {

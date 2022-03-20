@@ -9,17 +9,20 @@ import com.promaze.Block;
 import com.promaze.BlockType;
 import com.promaze.Maze;
 import com.promaze.generateAlgorithms.Sidewinder;
+import com.promaze.statistics.Statistics;
 
 public class MainGui {
 
     private ShapeRenderer shapeRenderer;
     public OurButton editButton,generateButton,genIncButton,genDecButton
-            ,saveMazeBtn,loadMazeBtn,solveBtn;
+            ,saveMazeBtn,loadMazeBtn,solveBtn,clearStatisticsButton, sortStatisticsButton;
     public float block_size = 10; // SZEROKOSC I WYSOKOSC W JEDNYM NO LOL TO PRZECIE KWADRAT
     private boolean edit_mode = true;
     private SpriteBatch batch;
+    private StatisticsGui statisticsGui;
+    private Statistics statistics;
 
-    public MainGui(SpriteBatch batch) {
+    public MainGui(SpriteBatch batch, Statistics statistics) {
         this.batch = batch;
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
@@ -27,9 +30,13 @@ public class MainGui {
         generateButton = new OurButton(45,590,200,50,"GENERATE (SIZE 11)",shapeRenderer);
         genDecButton = new OurButton(10,590,35,50,"-",shapeRenderer);
         genIncButton = new OurButton(245,590,35,50,"+",shapeRenderer);
-        saveMazeBtn = new OurButton(10,530,270,50,"SAVE MAZE",shapeRenderer);
-        loadMazeBtn = new OurButton(10,470,270,50,"LOAD MAZE",shapeRenderer);
+        saveMazeBtn = new OurButton(10,530,135,50,"SAVE MAZE",shapeRenderer);
+        loadMazeBtn = new OurButton(10 + 135,530,135,50,"LOAD MAZE",shapeRenderer);
         solveBtn = new OurButton(10,400,270,50,"SOLVE",shapeRenderer);
+        clearStatisticsButton = new OurButton(10, 340, 270, 50, "CLEAR STATISTICS", shapeRenderer);
+        sortStatisticsButton = new OurButton(10, 280, 270, 50, "SORT STATISTICS", shapeRenderer);
+        this.statistics = statistics;
+        this.statisticsGui = new StatisticsGui(shapeRenderer,batch,statistics,700,270);
     }
 
     public void setEdit_mode(boolean edit_mode) {
@@ -55,6 +62,9 @@ public class MainGui {
         saveMazeBtn.draw(batch);
         loadMazeBtn.draw(batch);
         solveBtn.draw(batch);
+        sortStatisticsButton.draw(batch);
+        clearStatisticsButton.draw(batch);
+        statisticsGui.draw(1000,10);
         shapeRenderer.end();
     }
 
@@ -66,6 +76,14 @@ public class MainGui {
             generateButton.isActive = !generateButton.isActive;
             genIncButton.isActive = !genIncButton.isActive;
             genDecButton.isActive = !genDecButton.isActive;
+        }
+        if(clearStatisticsButton.isPressed())
+        {
+            statistics.clearStatistics();
+        }
+        if(sortStatisticsButton.isPressed())
+        {
+            statistics.sort();
         }
 
     }

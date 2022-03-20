@@ -40,6 +40,10 @@ public class Statistics {
         return this.statisticItems;
     }
 
+    public void clearStatistics()
+    {
+        statisticItems.clear();
+    }
     @Override
     public String toString() {
         return "Statistics{" +
