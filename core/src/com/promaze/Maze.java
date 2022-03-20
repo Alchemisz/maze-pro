@@ -67,6 +67,30 @@ public class Maze{
         }
     }
 
+    public void removeAgents()
+    {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                Block currentBlock = this.mazeGrid[i][j];
+                if(currentBlock.getBlockType().equals(BlockType.AGENT)) {
+                    currentBlock.setBlockType(BlockType.AIR);
+                }
+            }
+        }
+    }
+    public void removeEnds()
+    {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                Block currentBlock = this.mazeGrid[i][j];
+                if(currentBlock.getBlockType().equals(BlockType.END)) {
+                    currentBlock.setBlockType(BlockType.AIR);
+                }
+            }
+        }
+    }
+
+
     public Block[][] getMazeGrid() {
         return mazeGrid;
     }

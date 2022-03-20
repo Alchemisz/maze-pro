@@ -8,11 +8,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class OurButton {
 
-    private int x,y,width,height,border_thickness = 3;
+    private int x,y,width,height,border_thickness = 3,textOffsetY = 0;
     private Color border,content;
     private Color bright = new Color(0.3f,0.3f,0.3f,1f);
     private String text;
-    public boolean isActive = true;
+    public boolean isActive = true, isEnabled = false;
 
     public void setText(String text) {
         this.text = text;
@@ -26,18 +26,24 @@ public class OurButton {
         if(!isActive)return;
 
         Color temp = new Color();
-        temp.add(content);
+        Color content2 = new Color().add(content);
+        temp.add(content2);
         temp.add(bright);
 
-        shapeRenderer.rect(x,y ,width,height,border,border,border,border);
+        if(isEnabled) {
+            content2.add(bright);
+            temp.add(bright);
+        }
+
+            shapeRenderer.rect(x,y ,width,height,border,border,border,border);
         if(isHighlighted()) shapeRenderer.rect(x +border_thickness,y + border_thickness,width - border_thickness * 2,height - border_thickness * 2,
                 temp,temp,temp,temp);
         else shapeRenderer.rect(x +border_thickness,y + border_thickness,width - border_thickness * 2,height - border_thickness * 2,
-                content,content,content,content);
+                content2,content2,content2,content2);
 
         shapeRenderer.end();
         batch.begin();
-        font.draw(batch,text,x - border_thickness,y + border_thickness + height/2,width,1,false);
+        font.draw(batch,text,x - border_thickness,y + border_thickness + height/2 + textOffsetY,width,1,false);
         batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
     }
@@ -53,10 +59,22 @@ public class OurButton {
         this.shapeRenderer = shapeRenderer;
     }
 
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
     public boolean isPressed()
     {
         if(!isActive)return false;
         return isHighlighted() && Gdx.input.justTouched();
+    }
+
+    public void setTextOffsetY(int textOffsetY) {
+        this.textOffsetY = textOffsetY;
     }
 
     public boolean isHighlighted()

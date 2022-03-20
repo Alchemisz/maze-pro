@@ -8,16 +8,18 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.promaze.Block;
 import com.promaze.BlockType;
 import com.promaze.Maze;
-import com.promaze.generateAlgorithms.Sidewinder;
 import com.promaze.statistics.Statistics;
+
+import static com.promaze.gui.edit_type.EDIT;
 
 public class MainGui {
 
     private ShapeRenderer shapeRenderer;
     public OurButton editButton,generateButton,genIncButton,genDecButton
-            ,saveMazeBtn,loadMazeBtn,solveBtn,clearStatisticsButton, sortStatisticsButton;
+            ,saveMazeBtn,loadMazeBtn,solveBtn,clearStatisticsButton, sortStatisticsButton, editAgentBtn,editDestinationBtn,editModeBtn;
     public float block_size = 10; // SZEROKOSC I WYSOKOSC W JEDNYM NO LOL TO PRZECIE KWADRAT
     private boolean edit_mode = true;
+    private edit_type edit_mode_type = EDIT;
     private SpriteBatch batch;
     private StatisticsGui statisticsGui;
     private Statistics statistics;
@@ -30,8 +32,18 @@ public class MainGui {
         generateButton = new OurButton(45,590,200,50,"GENERATE (SIZE 11)",shapeRenderer);
         genDecButton = new OurButton(10,590,35,50,"-",shapeRenderer);
         genIncButton = new OurButton(245,590,35,50,"+",shapeRenderer);
+
         saveMazeBtn = new OurButton(10,530,135,50,"SAVE MAZE",shapeRenderer);
         loadMazeBtn = new OurButton(10 + 135,530,135,50,"LOAD MAZE",shapeRenderer);
+
+        editModeBtn = new OurButton(10,470,90,50,"EDIT",shapeRenderer);
+        editAgentBtn = new OurButton(10 + 90 ,470,90,50,"SET\nAGENT",shapeRenderer);
+        editDestinationBtn = new OurButton(10 + 90 * 2,470,90,50,"SET\nTARGET",shapeRenderer);
+
+        editModeBtn.setEnabled(true);
+        editAgentBtn.setTextOffsetY(10);
+        editDestinationBtn.setTextOffsetY(10);
+
         solveBtn = new OurButton(10,400,270,50,"SOLVE",shapeRenderer);
         clearStatisticsButton = new OurButton(10, 340, 270, 50, "CLEAR STATISTICS", shapeRenderer);
         sortStatisticsButton = new OurButton(10, 280, 270, 50, "SORT STATISTICS", shapeRenderer);
@@ -64,6 +76,9 @@ public class MainGui {
         solveBtn.draw(batch);
         sortStatisticsButton.draw(batch);
         clearStatisticsButton.draw(batch);
+        editModeBtn.draw(batch);
+        editAgentBtn.draw(batch);
+        editDestinationBtn.draw(batch);
         statisticsGui.draw(1000,10);
         shapeRenderer.end();
     }
@@ -84,6 +99,27 @@ public class MainGui {
         if(sortStatisticsButton.isPressed())
         {
             statistics.sort();
+        }
+        if(editModeBtn.isPressed())
+        {
+            edit_mode_type = EDIT;
+            editModeBtn.setEnabled(true);
+            editAgentBtn.setEnabled(false);
+            editDestinationBtn.setEnabled(false);
+        }
+        if(editAgentBtn.isPressed())
+        {
+            edit_mode_type = edit_type.SETAGENT;
+            editModeBtn.setEnabled(false);
+            editAgentBtn.setEnabled(true);
+            editDestinationBtn.setEnabled(false);
+        }
+        if(editDestinationBtn.isPressed())
+        {
+            edit_mode_type = edit_type.SETTARGET;
+            editModeBtn.setEnabled(false);
+            editAgentBtn.setEnabled(false);
+            editDestinationBtn.setEnabled(true);
         }
 
     }
@@ -145,7 +181,18 @@ public class MainGui {
                 if(edit_mode) {
                     if (b.isHighlighted(b.getY() * block_size + x, b.getX() * block_size + y, block_size))
                         highlighted = b;
-                    b.updateBlockType(b.getY() * block_size + x, b.getX() * block_size + y, block_size);
+                    switch(edit_mode_type){
+                        case EDIT:
+                            b.updateBlockType(b.getY() * block_size + x, b.getX() * block_size + y, block_size);
+                            break;
+                        case SETAGENT:
+                            b.updateBlockTypeSetActor(b.getY() * block_size + x, b.getX() * block_size + y, block_size,maze);
+                            break;
+                        case SETTARGET:
+                            b.updateBlockTypeSetEnd(b.getY() * block_size + x, b.getX() * block_size + y, block_size,maze);
+                            break;
+                    }
+
                 }
             }
         }

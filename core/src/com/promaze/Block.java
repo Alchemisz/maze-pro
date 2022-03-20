@@ -55,6 +55,42 @@ public class Block extends ClickListener {
 
     }
 
+    public void updateBlockTypeSetActor(float x, float y, float size ,Maze maze)
+    {
+        if(!Gdx.input.justTouched())return;
+
+        float x2 = x+size;
+        float y2 = y+size;
+        float mouseX = Gdx.input.getX();
+        float mouseY = Gdx.input.getY();
+
+        System.out.println(this.blockType);
+        if(x<mouseX && mouseX<x2)
+            if(y<mouseY && mouseY<y2) {
+                maze.removeAgents();
+                this.blockType = this.blockType.equals(BlockType.AIR) ? BlockType.AGENT : this.blockType;
+            }
+
+    }
+
+    public void updateBlockTypeSetEnd(float x, float y, float size, Maze maze)
+    {
+        if(!Gdx.input.justTouched())return;
+
+        float x2 = x+size;
+        float y2 = y+size;
+        float mouseX = Gdx.input.getX();
+        float mouseY = Gdx.input.getY();
+
+        if(x<mouseX && mouseX<x2)
+            if(y<mouseY && mouseY<y2) {
+                maze.removeEnds();
+                this.blockType = this.blockType.equals(BlockType.AIR) ? BlockType.END : this.blockType;
+            }
+
+    }
+
+
     public boolean isHighlighted(float x, float y, float size)
     {
         float x2 = x+size;
