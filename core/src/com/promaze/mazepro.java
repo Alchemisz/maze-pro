@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.promaze.fileManager.FileManager;
 import com.promaze.generateAlgorithms.Sidewinder;
 import com.promaze.gui.MainGui;
+import com.promaze.solvers.AntColonySolver;
 import com.promaze.solvers.RecurrentSolver;
 import com.promaze.solvers.Solver;
 import com.promaze.statistics.StatisticItem;
@@ -74,7 +75,7 @@ public class mazepro extends ApplicationAdapter{
 		}
 
 		if (gui.buttonListener().equals("SOLVE_MAZE")){
-			Solver solver = new RecurrentSolver();
+			Solver solver = new AntColonySolver();
 			Stopwatch stopwatch = new StopwatchImpl();
 			stopwatch.start();
 			List<Maze> steps = solver.solve(maze);

@@ -9,6 +9,7 @@ import lombok.Data;
 public class Block extends ClickListener {
 
     private BlockType blockType;
+    private float intensity = 1f;
     private int x, y;
 
 
@@ -22,6 +23,14 @@ public class Block extends ClickListener {
         this.blockType = BlockType.valueOf(singleBlockElements[0]);
         this.x = Integer.parseInt(singleBlockElements[1]);
         this.y = Integer.parseInt(singleBlockElements[2]);
+    }
+
+    public float getIntensity() {
+        return intensity;
+    }
+
+    public void setIntensity(float intensity) {
+        this.intensity = intensity;
     }
 
     public BlockType getBlockType() {
