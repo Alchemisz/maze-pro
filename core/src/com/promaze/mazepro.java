@@ -94,10 +94,13 @@ public class mazepro extends ApplicationAdapter{
 			//UWAGA BOMBA
 			Block[][] grid = maze.getMazeGrid();
 			Random random = new Random();
-			int _x1 = Math.abs(random.nextInt())%grid.length;
-			int _x2 = Math.abs(random.nextInt())%grid.length;
-			int _y1 = Math.abs(random.nextInt())%grid.length;
-			int _y2 = Math.abs(random.nextInt())%grid.length;
+			int _x1,_y1,_x2,_y2;
+			do {
+				_x1 = Math.abs(random.nextInt()) % grid.length;
+				_x2 = Math.abs(random.nextInt()) % grid.length;
+				_y1 = Math.abs(random.nextInt()) % grid.length;
+				_y2 = Math.abs(random.nextInt()) % grid.length;
+			}while(!grid[_x1][_y1].getBlockType().equals(BlockType.AIR) || !grid[_x2][_y2].getBlockType().equals(BlockType.AIR));
 			grid[_x1][_y1].setBlockType(BlockType.AGENT);
 			grid[_x2][_y2].setBlockType(BlockType.END);
 			//KONIEC
