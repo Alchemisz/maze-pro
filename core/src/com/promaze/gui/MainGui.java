@@ -28,7 +28,8 @@ public class MainGui {
         this.batch = batch;
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
-        editButton = new OurButton(10,650,270,50,"EDIT MODE:ON",shapeRenderer);
+        editButton = new OurButton(10,650,270,50,"EDIT MODE",shapeRenderer);
+        editButton.setEnabled(true);
         generateButton = new OurButton(45,590,200,50,"GENERATE (SIZE 11)",shapeRenderer);
         genDecButton = new OurButton(10,590,35,50,"-",shapeRenderer);
         genIncButton = new OurButton(245,590,35,50,"+",shapeRenderer);
@@ -44,9 +45,9 @@ public class MainGui {
         editAgentBtn.setTextOffsetY(10);
         editDestinationBtn.setTextOffsetY(10);
 
-        solveBtn = new OurButton(10,400,270,50,"SOLVE",shapeRenderer);
-        clearStatisticsButton = new OurButton(10, 340, 270, 50, "CLEAR STATISTICS", shapeRenderer);
-        sortStatisticsButton = new OurButton(10, 280, 270, 50, "SORT STATISTICS", shapeRenderer);
+        solveBtn = new OurButton(10,130,270,50,"SOLVE",shapeRenderer);
+        clearStatisticsButton = new OurButton(10, 70, 270, 50, "CLEAR STATISTICS", shapeRenderer);
+        sortStatisticsButton = new OurButton(10, 10, 270, 50, "SORT STATISTICS", shapeRenderer);
         this.statistics = statistics;
         this.statisticsGui = new StatisticsGui(shapeRenderer,batch,statistics,700,270);
     }
@@ -87,10 +88,15 @@ public class MainGui {
     {
         if(editButton.isPressed()) {
             changeEditMode();
-            editButton.setText((edit_mode)?"EDIT MODE:ON":"EDIT MODE:OFF");
+            editButton.setEnabled(edit_mode);
             generateButton.isActive = !generateButton.isActive;
             genIncButton.isActive = !genIncButton.isActive;
             genDecButton.isActive = !genDecButton.isActive;
+            editModeBtn.isActive = !editModeBtn.isActive;
+            editAgentBtn.isActive = !editAgentBtn.isActive;
+            editDestinationBtn.isActive = !editDestinationBtn.isActive;
+            saveMazeBtn.isActive = !saveMazeBtn.isActive;
+            loadMazeBtn.isActive = !loadMazeBtn.isActive;
         }
         if(clearStatisticsButton.isPressed())
         {

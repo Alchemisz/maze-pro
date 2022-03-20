@@ -10,7 +10,7 @@ public class OurButton {
 
     private int x,y,width,height,border_thickness = 3,textOffsetY = 0;
     private Color border,content;
-    private Color bright = new Color(0.3f,0.3f,0.3f,1f);
+    private Color bright = new Color(0.2f,0.2f,0.2f,1f);
     private String text;
     public boolean isActive = true, isEnabled = false;
 
