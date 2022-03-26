@@ -8,6 +8,7 @@ import java.util.*;
 
 public class AntColonySolver implements Solver {
     private Random rand;
+    float evaporateRate = 0.02f;
 
     public AntColonySolver() {
         rand = new Random();
@@ -17,19 +18,65 @@ public class AntColonySolver implements Solver {
     protected class Ant {
         public int x, y;
         public int parentX, parentY;
+        private int initX, initY;
         public int state = 0;
+        public Stack<Integer[]> path = new Stack<>();
         float alpha;
         float beta;
+        public int distance;
+        public float distanceInc;
 
         public Ant(int x, int y) {
             this.state = 0;
             this.x = x;
             this.y = y;
             this.parentX = -1;
+            this.initX = this.x;
+            this.initY = this.y;
             this.parentY = -1;
             this.alpha = 0.5f;
             this.beta = 0.5f;
+            this.distance = 0;
+            this.distanceInc = 1.0f;
         }
+
+        public void changeState() {
+            this.distance = 0;
+            this.distanceInc = 1.0f;
+            if(this.state == 1) {
+                this.state = 0;
+            } else {
+                this.state = 1;
+            }
+
+        }
+
+        public void respawn() {
+            this.state = 0;
+            this.x = this.initX;
+            this.y = this.initY;
+            this.parentX = this.x;
+            this.parentY = this.y;
+            this.alpha = 0.5f;
+            this.beta = 0.5f;
+            this.path.clear();
+            this.distance = 0;
+            this.distanceInc = 1.0f;
+        }
+
+        public void incrementDistance() {
+            this.distance += 1;
+            this.distanceInc += 0.5f;
+        }
+
+        public float getPheromone() {
+            if(this.state == 0) {
+                return 0.02f;
+            } else {
+                return 0.02f + 1.4f/distanceInc;
+            }
+        }
+
     }
 
     @Override
@@ -37,7 +84,7 @@ public class AntColonySolver implements Solver {
         List<Maze> list = new ArrayList<>();
         list.add(maze);
 
-        Ant[] ants = new Ant[30];
+        Ant[] ants = new Ant[50];
         Block agent = maze.getAgentPosition();
 
         if(agent.getY() == -1) {
@@ -49,11 +96,11 @@ public class AntColonySolver implements Solver {
         float[][] pheromoneMap = generatePheromoneMap(maze);
         Block[][] grid = maze.getMazeGrid();
 
-        for(int i=0; i<20000; i++) {
+        for(int i=0; i<128000; i++) {
             for(Ant ant : ants) {
                 moveAnt(ant, grid, pheromoneMap);
             }
-            updatePheromones(pheromoneMap);
+            updatePheromones(pheromoneMap, ants);
         }
         float[] minMax = minMax(pheromoneMap);
         float min = minMax[0];
@@ -69,9 +116,12 @@ public class AntColonySolver implements Solver {
                 } else {
                     pheromoneMap[i][j] = pheromoneMap[i][j] - min;
                     pheromoneMap[i][j] /= range;
+
                 }
-                if(pheromoneMap[i][j] > 0.05f && !grid[i][j].getBlockType().equals(BlockType.END) && !grid[i][j].getBlockType().equals(BlockType.AGENT)) {
-                    grid[i][j].setIntensity(pheromoneMap[i][j]);
+                if(pheromoneMap[i][j] > 0.01f && !grid[i][j].getBlockType().equals(BlockType.END) && !grid[i][j].getBlockType().equals(BlockType.AGENT)) {
+                    float tmp = pheromoneMap[i][j];
+                    tmp = 2.857f * tmp * tmp * tmp - 3.5f * tmp * tmp + 1.64f * tmp;
+                    grid[i][j].setIntensity(tmp);
                     grid[i][j].setBlockType(BlockType.PHEROMONE);
                 }
             }
@@ -97,18 +147,43 @@ public class AntColonySolver implements Solver {
         return new float[]{min, max};
     }
 
-    private void updatePheromones(float[][] pheromoneMap) {
+    private void updatePheromones(float[][] pheromoneMap, Ant[] ants) {
+        for(Ant ant : ants) {
+            pheromoneMap[ant.x][ant.y] += ant.getPheromone();
+
+        }
         for(int i=0; i<pheromoneMap.length; i++) {
             for(int j=0; j<pheromoneMap[0].length; j++) {
-                pheromoneMap[i][j] *= 0.92f;
-                if(pheromoneMap[i][j] < 0.3f) {
-                    pheromoneMap[i][j] = 0.3f;
+                pheromoneMap[i][j] *= (1 - evaporateRate);
+                if(pheromoneMap[i][j] > 25.0f) {
+                    pheromoneMap[i][j] = 25.0f;
+                }
+                if(pheromoneMap[i][j] < 1.0f) {
+                    pheromoneMap[i][j] = 1.0f;
                 }
             }
         }
     }
 
     private void moveAnt(Ant ant, Block[][] grid, float[][] pheromoneMap) {
+        ant.incrementDistance();
+
+        if (ant.state == 1) {
+            Integer[] block = ant.path.pop();
+            if((block[0] == ant.initX && block[1] == ant.initY) || ant.path.empty()) {
+                ant.respawn();
+                return;
+            }
+            ant.x = block[0];
+            ant.y = block[1];
+            return;
+        } else if(ant.state == 0) {
+            if(ant.distance > grid.length * 10) {
+                ant.respawn();
+                return;
+            }
+        }
+
         int[] neighbours = {0,1,
                 1, 0,
                 0, -1,
@@ -127,15 +202,16 @@ public class AntColonySolver implements Solver {
                 if (!grid[_x][_y].getBlockType().equals(BlockType.WALL)) {
                     if (grid[_x][_y].getBlockType().equals(BlockType.END)) {
                         if (ant.state == 0) {
-                            ant.state = 1;
+                            //ant.state = 1;
+                            ant.changeState();
                             continue;
                         }
-                    } else if (grid[_x][_y].getBlockType().equals(BlockType.AGENT)) {
+                    } /*else if (grid[_x][_y].getBlockType().equals(BlockType.AGENT)) {
                         if (ant.state == 1) {
                             ant.state = 0;
                             continue;
                         }
-                    }
+                    }*/
                     if(_x == ant.parentX && _y == ant.parentY) {
                         continue;
                     }
@@ -164,19 +240,10 @@ public class AntColonySolver implements Solver {
                 }
             }
         }
-        if(ant.state == 1) {
-            pheromoneMap[ant.x][ant.y] *= 1.3;
-            if(pheromoneMap[ant.x][ant.y] > 1.27f) {
-                pheromoneMap[ant.x][ant.y] = 1.27f;
-            }
-        } else if(ant.state == 0) {
-            pheromoneMap[ant.x][ant.y] *= 1.08f;
-            if(pheromoneMap[ant.x][ant.y] > 1.27f) {
-                pheromoneMap[ant.x][ant.y] = 1.27f;
-            }
-        }
+
         ant.parentX = ant.x;
         ant.parentY = ant.y;
+        ant.path.add(new Integer[]{ant.x, ant.y});
         ant.x = _x;
         ant.y = _y;
     }
@@ -186,7 +253,7 @@ public class AntColonySolver implements Solver {
         float[][] pheromoneMap = new float[grid.length][grid[0].length];
         for(int i=0; i<pheromoneMap.length; i++) {
             for(int j=0; j<pheromoneMap[0].length; j++) {
-                pheromoneMap[i][j] = 0.301f;
+                pheromoneMap[i][j] = 1.0f;
             }
         }
         return pheromoneMap;
