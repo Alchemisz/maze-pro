@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.promaze.fileManager.FileManager;
+import com.promaze.generateAlgorithms.BinaryTree;
 import com.promaze.generateAlgorithms.Sidewinder;
 import com.promaze.gui.MainGui;
 import com.promaze.solvers.*;
@@ -43,7 +44,7 @@ public class mazepro extends ApplicationAdapter{
 	public void create () {
 		batch = new SpriteBatch();
 		maze = new Maze(51, 51);
-		maze.applyAlgorithm(new Sidewinder());
+		maze.applyAlgorithm(new BinaryTree());
 		gui = new MainGui(batch,statistics);
 	}
 
@@ -92,7 +93,7 @@ public class mazepro extends ApplicationAdapter{
 		if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || gui.buttonListener().equals("GENBUTTON")) //TESTOWANIE
 		{
 			maze = new Maze(mazeSize, mazeSize);
-			maze.applyAlgorithm(new Sidewinder());
+			maze.applyAlgorithm(new BinaryTree());
 			//UWAGA BOMBA
 			Block[][] grid = maze.getMazeGrid();
 			Random random = new Random();
