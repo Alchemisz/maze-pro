@@ -3,6 +3,7 @@ package com.promaze.gui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.promaze.Block;
@@ -150,7 +151,7 @@ public class MainGui {
     private void drawMaze(float x, float y ,Maze maze)
     {
         Block highlighted = new Block(-1,-1); //do zapisu aktualnie podswietlonego bloczku, do wyswietlenia potem
-
+        BitmapFont font = new BitmapFont();
         for (Block bArray[]:maze.getMazeGrid()){
             for(Block b:bArray) {
                 if(b.getBlockType().equals(BlockType.WALL))
@@ -183,13 +184,18 @@ public class MainGui {
                             new Color(1.0f,0.0f,0.0f,1.0f),
                             new Color(1.0f,0.0f,0.0f,1.0f),
                             new Color(1.0f,0.0f,0.0f,1.0f));
-                else if(b.getBlockType().equals(BlockType.PHEROMONE))
+                else if(b.getBlockType().equals(BlockType.PHEROMONE)) {
                     shapeRenderer.rect(b.getY()*block_size + x,720 - (b.getX()*block_size) - y - block_size,block_size,block_size,
                             new Color(b.getIntensity()*1.0f,0.0f,1.0f,1.0f),
                             new Color(b.getIntensity()*1.0f,0.0f,1.0f,1.0f),
                             new Color(b.getIntensity()*1.0f,0.0f,1.0f,1.0f),
                             new Color(b.getIntensity()*1.0f,0.0f,1.0f,1.0f));
-                else shapeRenderer.rect(b.getY()*block_size + x,720 - (b.getX()*block_size) - y - block_size,block_size,block_size,
+                    /*shapeRenderer.end();
+                    batch.begin();
+                    font.draw(batch,String.format("%.2f", b.getIntensity()),b.getY()*block_size + x,720 - (b.getX()*block_size) - y - block_size + 30,block_size,1,false);
+                    batch.end();
+                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);*/
+                } else shapeRenderer.rect(b.getY()*block_size + x,720 - (b.getX()*block_size) - y - block_size,block_size,block_size,
                         new Color(1.0f,1.0f,1.0f,1.0f),
                         new Color(1.0f,1.0f,1.0f,1.0f),
                         new Color(1.0f,1.0f,1.0f,1.0f),
