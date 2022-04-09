@@ -16,7 +16,7 @@ public class AntColonySolver implements Solver {
     }
 
     private Random rand;
-    float evaporateRate = 0.02f;
+    float evaporateRate = 0.05f;
 
     public AntColonySolver() {
         rand = new Random();
@@ -29,13 +29,16 @@ public class AntColonySolver implements Solver {
         private int initX, initY;
         public int state = 0;
         public Stack<Integer[]> path = new Stack<>();
-        float alpha;
-        float beta;
+        float basePheromone;
+        float baseReturnPheromone;
+        float returnPheromone;
+        float distanceModifier;
         public int distance;
         public float distanceInc;
         int init = 1;
 
-        public Ant(int x, int y) {
+        public Ant(int x, int y, int gridLength) {
+            float modifier = 1.0f * (float)gridLength;
             this.state = 0;
             this.x = x;
             this.y = y;
@@ -43,8 +46,19 @@ public class AntColonySolver implements Solver {
             this.initX = this.x;
             this.initY = this.y;
             this.parentY = -1;
-            this.alpha = 0.5f;
-            this.beta = 0.5f;
+
+            if(modifier < 25f) {
+                this.distanceModifier = 0.08f;
+                this.basePheromone = 0f;//0.1f + modifier * 0.05f;
+                this.baseReturnPheromone = 1f;//0.3f + modifier * 0.1f;
+                this.returnPheromone = 1f;
+            } else {
+                this.distanceModifier = 0.08f;
+                this.basePheromone = 0f;//0.1f + modifier * 0.05f;
+                this.baseReturnPheromone = 1f;//0.3f + modifier * 0.1f;
+                this.returnPheromone = 1f;//modifier*0.01f;
+            }
+
             this.distance = 0;
             this.distanceInc = 1.0f;
         }
@@ -58,7 +72,6 @@ public class AntColonySolver implements Solver {
             } else {
                 this.state = 1;
             }
-
         }
 
         public void respawn() {
@@ -67,8 +80,6 @@ public class AntColonySolver implements Solver {
             this.y = this.initY;
             this.parentX = this.x;
             this.parentY = this.y;
-            this.alpha = 0.5f;
-            this.beta = 0.5f;
             this.path.clear();
             this.distance = 0;
             this.distanceInc = 1.0f;
@@ -76,17 +87,17 @@ public class AntColonySolver implements Solver {
 
         public void incrementDistance() {
             this.distance += 1;
-            this.distanceInc += 0.02f;
+            this.distanceInc += this.distanceModifier;
         }
 
         public float getPheromone() {
             if(this.init == 1) {
-                return 0.01f;
+                return 0.00001f;
             }
             if(this.state == 0) {
-                return 0.03f ;//+ 0.5f/distanceInc;//+ 0.9f/distanceInc;
+                return 0.00001f + this.basePheromone/distanceInc;//0.13f ;//+ 0.5f/distanceInc;//+ 0.9f/distanceInc;
             } else {
-                return 0.24f + 12.5f/distanceInc;
+                return this.returnPheromone + this.baseReturnPheromone/distanceInc;
             }
         }
 
@@ -97,19 +108,30 @@ public class AntColonySolver implements Solver {
         List<Maze> list = new ArrayList<>();
         list.add(maze);
 
-        Ant[] ants = new Ant[400];
+        float[][] pheromoneMap = generatePheromoneMap(maze);
+        Block[][] grid = maze.getMazeGrid();
+
+        Ant[] ants;
+
+        if(grid.length < 100) {
+            ants = new Ant[grid.length * 8 + 50];
+        } else {
+            ants = new Ant[850];
+        }
+
         Block agent = maze.getAgentPosition();
 
         if(agent.getY() == -1) {
             return list;
         }
-        for(int i=0; i<ants.length; i++) {
-            ants[i] = new Ant(agent.getX(), agent.getY());
-        }
-        float[][] pheromoneMap = generatePheromoneMap(maze);
-        Block[][] grid = maze.getMazeGrid();
 
-        for(int i=0; i<70000; i++) {
+
+        for(int i=0; i<ants.length; i++) {
+            ants[i] = new Ant(agent.getX(), agent.getY(), grid.length);
+        }
+
+
+        for(int i=0; i<30000; i++) {
             for(Ant ant : ants) {
                 moveAnt(ant, grid, pheromoneMap);
             }
@@ -132,7 +154,7 @@ public class AntColonySolver implements Solver {
                 System.out.print(pheromoneMap[i][j] + " ");
                 if(pheromoneMap[i][j] > 0.01f && !grid[i][j].getBlockType().equals(BlockType.END) && !grid[i][j].getBlockType().equals(BlockType.AGENT)) {
                     float tmp = pheromoneMap[i][j];
-                    tmp = 2.857f * tmp * tmp * tmp - 3.5f * tmp * tmp + 1.64f * tmp;
+                    //tmp = 2.857f * tmp * tmp * tmp - 3.5f * tmp * tmp + 1.64f * tmp;
                     grid[i][j].setIntensity(tmp);
                     grid[i][j].setBlockType(BlockType.PHEROMONE);
                 }
@@ -166,8 +188,8 @@ public class AntColonySolver implements Solver {
         for(int i=0; i<pheromoneMap.length; i++) {
             for(int j=0; j<pheromoneMap[0].length; j++) {
                 pheromoneMap[i][j] *= (1 - evaporateRate);
-                if(pheromoneMap[i][j] > 55.0f) {
-                    pheromoneMap[i][j] = 55.0f;
+                if(pheromoneMap[i][j] > 100.0f) {
+                    pheromoneMap[i][j] = 100.0f;
                 }
                 if(pheromoneMap[i][j] < 1.0f) {
                     pheromoneMap[i][j] = 1.0f;
@@ -215,6 +237,7 @@ public class AntColonySolver implements Solver {
                         if (ant.state == 0) {
                             //ant.state = 1;
                             ant.changeState();
+                            ant.path.add(new Integer[]{ant.x, ant.y});
                             continue;
                         }
                     } /*else if (grid[_x][_y].getBlockType().equals(BlockType.AGENT)) {
