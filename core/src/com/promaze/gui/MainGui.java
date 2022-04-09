@@ -17,7 +17,9 @@ public class MainGui {
 
     private ShapeRenderer shapeRenderer;
     public OurButton editButton,generateButton,genIncButton,genDecButton
-            ,saveMazeBtn,loadMazeBtn,solveBtn,clearStatisticsButton, sortStatisticsButton, editAgentBtn,editDestinationBtn,editModeBtn,clearPathBtn;
+            ,saveMazeBtn,loadMazeBtn,solveBtn,clearStatisticsButton, sortStatisticsButton,
+            editAgentBtn,editDestinationBtn,editModeBtn,clearPathBtn,repositionButton,algoMenuButton,
+            algoSelectButton,algoSelectLeft,algoSelectRight,generatorSelectButton,generatorSelectLeft,generatorSelectRight;
     public float block_size = 10; // SZEROKOSC I WYSOKOSC W JEDNYM NO LOL TO PRZECIE KWADRAT
     private boolean edit_mode = true;
     private edit_type edit_mode_type = EDIT;
@@ -29,27 +31,79 @@ public class MainGui {
         this.batch = batch;
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
-        editButton = new OurButton(10,650,270,50,"EDIT MODE",shapeRenderer);
-        editButton.setEnabled(true);
-        generateButton = new OurButton(45,590,200,50,"GENERATE (SIZE 11)",shapeRenderer);
-        genDecButton = new OurButton(10,590,35,50,"-",shapeRenderer);
-        genIncButton = new OurButton(245,590,35,50,"+",shapeRenderer);
 
-        saveMazeBtn = new OurButton(10,530,135,50,"SAVE MAZE",shapeRenderer);
-        loadMazeBtn = new OurButton(10 + 135,530,135,50,"LOAD MAZE",shapeRenderer);
+        PositionHelper editPH = new PositionHelper(650,10);
+        PositionHelper algoPH = new PositionHelper(650,10);
 
-        editModeBtn = new OurButton(10,470,90,50,"EDIT",shapeRenderer);
-        editAgentBtn = new OurButton(10 + 90 ,470,90,50,"SET\nAGENT",shapeRenderer);
-        editDestinationBtn = new OurButton(10 + 90 * 2,470,90,50,"SET\nTARGET",shapeRenderer);
-        clearPathBtn = new OurButton(10 ,425,270,35,"CLEAR PATHS",shapeRenderer);
+        editButton = new OurButton(10,650,135,50,"EDIT MODE",shapeRenderer);
+        editButton.enable();
+        algoMenuButton = new OurButton(10 + 135,650,135,50,"ALGO MODE",shapeRenderer);
+        algoMenuButton.disable();
+
+        generatorSelectButton = new OurButton(45,editPH.getNewRelativePosition(50),200,50,"SIDEWINDER",shapeRenderer);
+        generatorSelectLeft = new OurButton(10,editPH.getRelativePosition(),35,50,"<",shapeRenderer);
+        generatorSelectRight = new OurButton(245,editPH.getRelativePosition(),35,50,">",shapeRenderer);
+        generatorSelectButton.isHoverable =false;
+
+        generateButton = new OurButton(45,editPH.getNewRelativePosition(50),200,50,"GENERATE (SIZE 11)",shapeRenderer);
+        genDecButton = new OurButton(10,editPH.getRelativePosition(),35,50,"-",shapeRenderer);
+        genIncButton = new OurButton(245,editPH.getRelativePosition(),35,50,"+",shapeRenderer);
+
+        saveMazeBtn = new OurButton(10,editPH.getNewRelativePosition(50),135,50,"SAVE MAZE",shapeRenderer);
+        loadMazeBtn = new OurButton(10 + 135,editPH.getRelativePosition(),135,50,"LOAD MAZE",shapeRenderer);
+
+        editModeBtn = new OurButton(10,editPH.getNewRelativePosition(50),90,50,"EDIT",shapeRenderer);
+        editAgentBtn = new OurButton(10 + 90 ,editPH.getRelativePosition(),90,50,"SET\nAGENT",shapeRenderer);
+        editDestinationBtn = new OurButton(10 + 90 * 2,editPH.getRelativePosition(),90,50,"SET\nTARGET",shapeRenderer);
+
+        clearPathBtn = new OurButton(10 ,editPH.getNewRelativePosition(35),270,35,"CLEAR PATHS",shapeRenderer);
+
 
         editModeBtn.setEnabled(true);
         editAgentBtn.setTextOffsetY(10);
         editDestinationBtn.setTextOffsetY(10);
 
-        solveBtn = new OurButton(10,130,270,50,"SOLVE",shapeRenderer);
-        clearStatisticsButton = new OurButton(10, 70, 270, 50, "CLEAR STATISTICS", shapeRenderer);
-        sortStatisticsButton = new OurButton(10, 10, 270, 50, "SORT STATISTICS", shapeRenderer);
+        //relacje przycisków
+        editButton.addChild(generateButton);
+        editButton.addChild(genDecButton);
+        editButton.addChild(genIncButton);
+        editButton.addChild(saveMazeBtn );
+        editButton.addChild(loadMazeBtn );
+        editButton.addChild(editModeBtn );
+        editButton.addChild(editAgentBtn);
+        editButton.addChild(editDestinationBtn);
+        editButton.addChild(clearPathBtn);
+        editButton.addChild(editModeBtn);
+        editButton.addChild(editAgentBtn);
+        editButton.addChild(editDestinationBtn);
+        editButton.addChild(generatorSelectRight);
+        editButton.addChild(generatorSelectButton);
+        editButton.addChild(generatorSelectLeft);
+
+
+        solveBtn = new OurButton(10,algoPH.getNewRelativePosition(50),270,50,"SOLVE",shapeRenderer);
+        solveBtn.deactivate();
+
+        algoSelectButton = new OurButton(45,algoPH.getNewRelativePosition(50),200,50,"ANT COLONY",shapeRenderer);
+        algoSelectLeft = new OurButton(10,algoPH.getRelativePosition(),35,50,"<",shapeRenderer);
+        algoSelectRight = new OurButton(245,algoPH.getRelativePosition(),35,50,">",shapeRenderer);
+
+        repositionButton = new OurButton(10,algoPH.getNewRelativePosition(50),270,50,"REPOSITION ACTORS",shapeRenderer);
+
+        repositionButton.deactivate();
+        algoSelectButton.deactivate();
+        algoSelectButton.isHoverable = false;
+        algoSelectLeft.deactivate();
+        algoSelectRight.deactivate();
+
+        algoMenuButton.addChild(solveBtn);
+        algoMenuButton.addChild(algoSelectButton);
+        algoMenuButton.addChild(algoSelectLeft);
+        algoMenuButton.addChild(algoSelectRight);
+        algoMenuButton.addChild(repositionButton);
+
+        clearStatisticsButton = new OurButton(1002, 57, 266, 50, "CLEAR STATISTICS", shapeRenderer);
+        sortStatisticsButton = new OurButton(1002, 10, 266, 50, "SORT STATISTICS", shapeRenderer);
         this.statistics = statistics;
         this.statisticsGui = new StatisticsGui(shapeRenderer,batch,statistics,700,270);
     }
@@ -63,6 +117,13 @@ public class MainGui {
         edit_mode = !edit_mode;
     }
 
+    public void setEditMode(boolean mode)
+    {
+        edit_mode = mode;
+    }
+
+
+
     public void draw(Maze maze)
     {
         calculate_optimal_block_size(maze);
@@ -70,6 +131,7 @@ public class MainGui {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         drawMaze(calculate_center_width_for_maze(maze),calculate_center_height_for_maze(maze),maze);
+        statisticsGui.draw(1000,10);
         editButton.draw(batch);
         generateButton.draw(batch);
         genIncButton.draw(batch);
@@ -79,29 +141,31 @@ public class MainGui {
         solveBtn.draw(batch);
         sortStatisticsButton.draw(batch);
         clearStatisticsButton.draw(batch);
+        generatorSelectButton.draw(batch);
+        generatorSelectLeft.draw(batch);
+        generatorSelectRight.draw(batch);
         editModeBtn.draw(batch);
         editAgentBtn.draw(batch);
         editDestinationBtn.draw(batch);
         clearPathBtn.draw(batch);
-        statisticsGui.draw(1000,10);
+        algoMenuButton.draw(batch);
+        algoSelectButton.draw(batch);
+        algoSelectLeft.draw(batch);
+        algoSelectRight.draw(batch);
+        repositionButton.draw(batch);
         shapeRenderer.end();
     }
 
     public void update()
     {
         if(editButton.isPressed()) {
-            changeEditMode();
-            editButton.setEnabled(edit_mode);
-            //FUJKA
-            generateButton.isActive = !generateButton.isActive;
-            genIncButton.isActive = !genIncButton.isActive;
-            genDecButton.isActive = !genDecButton.isActive;
-            editModeBtn.isActive = !editModeBtn.isActive;
-            editAgentBtn.isActive = !editAgentBtn.isActive;
-            editDestinationBtn.isActive = !editDestinationBtn.isActive;
-            saveMazeBtn.isActive = !saveMazeBtn.isActive;
-            loadMazeBtn.isActive = !loadMazeBtn.isActive;
-            clearPathBtn.isActive = !clearPathBtn.isActive;
+            setEditMode(true);
+            editButton.enable();
+            if(editButton.isEnabled)
+                editButton.activateChildButtons();
+            else editButton.deactivateChildButtons();
+            algoMenuButton.disable();
+            algoMenuButton.deactivateChildButtons();
         }
         if(clearStatisticsButton.isPressed())
         {
@@ -111,6 +175,19 @@ public class MainGui {
         {
             statistics.sort();
         }
+
+        if(algoMenuButton.isPressed())
+        {
+            algoMenuButton.enable();
+            editButton.disable();
+            setEditMode(false);
+            editButton.deactivateChildButtons();
+            if(algoMenuButton.isEnabled)
+                algoMenuButton.activateChildButtons();
+            else algoMenuButton.deactivateChildButtons();
+
+        }
+
         if(editModeBtn.isPressed())
         {
             edit_mode_type = EDIT;
@@ -145,6 +222,11 @@ public class MainGui {
         if (loadMazeBtn.isPressed()) return "LOAD_MAZE";
         if(solveBtn.isPressed()) return "SOLVE_MAZE";
         if(clearPathBtn.isPressed()) return "CLEAR_PATH";
+        if(algoSelectLeft.isPressed()) return "ALGO_LEFT";
+        if(algoSelectRight.isPressed()) return "ALGO_RIGHT";
+        if(repositionButton.isPressed()) return "REPOSITION";
+        if(generatorSelectRight.isPressed()) return "GEN_RIGHT";
+        if(generatorSelectLeft.isPressed()) return "GEN_LEFT";
         return "";
     }
 

@@ -7,6 +7,14 @@ import com.promaze.Maze;
 import java.util.*;
 
 public class AntColonySolver implements Solver {
+    public String name = "ANT COLONY";
+
+    @Override
+    public String getName()
+    {
+        return name;
+    }
+
     private Random rand;
     float evaporateRate = 0.02f;
 

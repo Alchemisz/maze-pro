@@ -6,13 +6,18 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class OurButton {
 
     private int x,y,width,height,border_thickness = 3,textOffsetY = 0;
     private Color border,content;
     private Color bright = new Color(0.2f,0.2f,0.2f,1f);
     private String text;
-    public boolean isActive = true, isEnabled = false;
+    public boolean isActive = true, isEnabled = false, isHoverable = true;
+    private LinkedList<OurButton> childButtons = new LinkedList<OurButton>();
+
 
     public void setText(String text) {
         this.text = text;
@@ -35,8 +40,10 @@ public class OurButton {
             temp.add(bright);
         }
 
+
             shapeRenderer.rect(x,y ,width,height,border,border,border,border);
-        if(isHighlighted()) shapeRenderer.rect(x +border_thickness,y + border_thickness,width - border_thickness * 2,height - border_thickness * 2,
+
+        if(isHighlighted()&&isHoverable) shapeRenderer.rect(x +border_thickness,y + border_thickness,width - border_thickness * 2,height - border_thickness * 2,
                 temp,temp,temp,temp);
         else shapeRenderer.rect(x +border_thickness,y + border_thickness,width - border_thickness * 2,height - border_thickness * 2,
                 content2,content2,content2,content2);
@@ -46,6 +53,51 @@ public class OurButton {
         font.draw(batch,text,x - border_thickness,y + border_thickness + height/2 + textOffsetY,width,1,false);
         batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+    }
+
+    public void enable()
+    {
+        this.isEnabled = true;
+    }
+
+    public void disable()
+    {
+        this.isEnabled = false;
+    }
+
+    public void switchActive()
+    {
+        this.isActive = !this.isActive;
+    }
+
+    public void addChild(OurButton ourButton)
+    {
+        this.childButtons.add(ourButton);
+    }
+
+    public void deactivate()
+    {
+        this.isActive = false;
+    }
+    public void activate()
+    {
+        this.isActive = true;
+    }
+
+    public void deactivateChildButtons()
+    {
+        for(OurButton child : childButtons)
+        {
+            child.deactivate();
+        }
+    }
+
+    public void activateChildButtons()
+    {
+        for(OurButton child : childButtons)
+        {
+            child.activate();
+        }
     }
 
     public OurButton(int x, int y, int width, int height, Color border, Color content, String text, ShapeRenderer shapeRenderer) {
