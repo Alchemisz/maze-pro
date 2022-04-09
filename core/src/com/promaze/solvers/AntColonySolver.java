@@ -76,7 +76,7 @@ public class AntColonySolver implements Solver {
 
         public void incrementDistance() {
             this.distance += 1;
-            this.distanceInc += 0.05f;
+            this.distanceInc += 0.02f;
         }
 
         public float getPheromone() {
@@ -86,7 +86,7 @@ public class AntColonySolver implements Solver {
             if(this.state == 0) {
                 return 0.03f ;//+ 0.5f/distanceInc;//+ 0.9f/distanceInc;
             } else {
-                return 0.24f + 7.5f/distanceInc;
+                return 0.24f + 12.5f/distanceInc;
             }
         }
 
@@ -97,7 +97,7 @@ public class AntColonySolver implements Solver {
         List<Maze> list = new ArrayList<>();
         list.add(maze);
 
-        Ant[] ants = new Ant[800];
+        Ant[] ants = new Ant[400];
         Block agent = maze.getAgentPosition();
 
         if(agent.getY() == -1) {
@@ -109,7 +109,7 @@ public class AntColonySolver implements Solver {
         float[][] pheromoneMap = generatePheromoneMap(maze);
         Block[][] grid = maze.getMazeGrid();
 
-        for(int i=0; i<108000; i++) {
+        for(int i=0; i<70000; i++) {
             for(Ant ant : ants) {
                 moveAnt(ant, grid, pheromoneMap);
             }
