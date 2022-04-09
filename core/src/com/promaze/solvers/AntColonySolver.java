@@ -52,10 +52,15 @@ public class AntColonySolver implements Solver {
                 this.basePheromone = 0f;//0.1f + modifier * 0.05f;
                 this.baseReturnPheromone = 1f;//0.3f + modifier * 0.1f;
                 this.returnPheromone = 0f;
-            } else {
+            } else if (modifier < 45f){
                 this.distanceModifier = 0.8f;
                 this.basePheromone = 0f;//0.1f + modifier * 0.05f;
                 this.baseReturnPheromone = 3f;//0.3f + modifier * 0.1f;
+                this.returnPheromone = 0f;//modifier*0.01f;
+            } else {
+                this.distanceModifier = 0.2f;
+                this.basePheromone = 0f;//0.1f + modifier * 0.05f;
+                this.baseReturnPheromone = 1f;//0.3f + modifier * 0.1f;
                 this.returnPheromone = 0f;//modifier*0.01f;
             }
 
@@ -108,7 +113,7 @@ public class AntColonySolver implements Solver {
         List<Maze> list = new ArrayList<>();
         list.add(maze);
 
-        float[][] pheromoneMap = generatePheromoneMap(maze);
+        final float[][] pheromoneMap = generatePheromoneMap(maze);
         Block[][] grid = maze.getMazeGrid();
 
         Ant[] ants;
@@ -135,6 +140,7 @@ public class AntColonySolver implements Solver {
             for(Ant ant : ants) {
                 moveAnt(ant, grid, pheromoneMap);
             }
+            //Arrays.stream(ants).parallel().forEach(e -> moveAnt(e, grid, pheromoneMap));
             updatePheromones(pheromoneMap, ants);
         }
         float[] minMax = minMax(pheromoneMap);
