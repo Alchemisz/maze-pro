@@ -3,6 +3,7 @@ package com.promaze;
 import com.promaze.generateAlgorithms.MazeGenerator;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class Maze{
 
@@ -94,11 +95,36 @@ public class Maze{
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 Block currentBlock = this.mazeGrid[i][j];
-                if(currentBlock.getBlockType().equals(BlockType.PATH) || currentBlock.getBlockType().equals(BlockType.VISITED)) {
+                if(currentBlock.getBlockType().equals(BlockType.PATH) || currentBlock.getBlockType().equals(BlockType.VISITED) ||currentBlock.getBlockType().equals(BlockType.PHEROMONE)) {
                     currentBlock.setBlockType(BlockType.AIR);
                 }
             }
         }
+
+    }
+
+    public void repositionActors()
+    {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                Block currentBlock = this.mazeGrid[i][j];
+                if(!currentBlock.getBlockType().equals(BlockType.WALL)) {
+                    currentBlock.setBlockType(BlockType.AIR);
+                }
+            }
+        }
+
+        Block[][] grid = this.getMazeGrid();
+        Random random = new Random();
+        int _x1,_y1,_x2,_y2;
+        do {
+            _x1 = Math.abs(random.nextInt()) % grid.length;
+            _x2 = Math.abs(random.nextInt()) % grid.length;
+            _y1 = Math.abs(random.nextInt()) % grid.length;
+            _y2 = Math.abs(random.nextInt()) % grid.length;
+        }while(!grid[_x1][_y1].getBlockType().equals(BlockType.AIR) || !grid[_x2][_y2].getBlockType().equals(BlockType.AIR));
+        grid[_x1][_y1].setBlockType(BlockType.AGENT);
+        grid[_x2][_y2].setBlockType(BlockType.END);
 
     }
 

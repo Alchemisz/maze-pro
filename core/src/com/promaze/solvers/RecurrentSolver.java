@@ -11,6 +11,14 @@ import java.util.Stack;
 
 public class RecurrentSolver implements Solver {
 
+    public String name = "RECURRENT";
+
+    @Override
+    public String getName()
+    {
+        return name;
+    }
+
     @Override
     public List<Maze> solve(Maze maze) {
         int[] neighbours = {0,1,

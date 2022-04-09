@@ -7,6 +7,14 @@ import java.util.Random;
 
 public class BinaryTree implements MazeGenerator {
 
+    private String name = "BINARY TREE";
+
+    @Override
+    public String getName()
+    {
+        return name;
+    }
+
     @Override
     public void generate(Block[][] mazeGrid) {
 

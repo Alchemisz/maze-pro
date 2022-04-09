@@ -9,6 +9,14 @@ import java.util.Random;
 
 public class Sidewinder implements MazeGenerator{
 
+    private String name = "SIDEWINDER";
+
+    @Override
+    public String getName()
+    {
+        return name;
+    }
+
     @Override
     public void generate(Block[][] mazeGrid) {
 
