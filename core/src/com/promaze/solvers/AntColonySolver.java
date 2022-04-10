@@ -5,6 +5,7 @@ import com.promaze.BlockType;
 import com.promaze.Maze;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class AntColonySolver implements Solver {
     public String name = "ANT COLONY";
@@ -16,7 +17,7 @@ public class AntColonySolver implements Solver {
     }
 
     private Random rand;
-    float evaporateRate = 0.005f;
+    float evaporateRate = 0.003f;
 
     public AntColonySolver() {
         rand = new Random();
@@ -48,20 +49,20 @@ public class AntColonySolver implements Solver {
             this.parentY = -1;
 
             if(modifier < 25f) {
-                this.distanceModifier = 0.8f;
-                this.basePheromone = 0f;//0.1f + modifier * 0.05f;
+                this.distanceModifier = 0.05f;
+                this.basePheromone = 0.0001f;//0.1f + modifier * 0.05f;
                 this.baseReturnPheromone = 1f;//0.3f + modifier * 0.1f;
-                this.returnPheromone = 0f;
+                this.returnPheromone = 0.005f;
             } else if (modifier < 45f){
-                this.distanceModifier = 0.8f;
-                this.basePheromone = 0f;//0.1f + modifier * 0.05f;
-                this.baseReturnPheromone = 3f;//0.3f + modifier * 0.1f;
-                this.returnPheromone = 0f;//modifier*0.01f;
-            } else {
-                this.distanceModifier = 0.2f;
-                this.basePheromone = 0f;//0.1f + modifier * 0.05f;
+                this.distanceModifier = 0.05f;
+                this.basePheromone = 0.0001f;//0.1f + modifier * 0.05f;
                 this.baseReturnPheromone = 1f;//0.3f + modifier * 0.1f;
-                this.returnPheromone = 0f;//modifier*0.01f;
+                this.returnPheromone = 0.005f;
+            } else {
+                this.distanceModifier = 0.05f;
+                this.basePheromone = 0.0f;//0.1f + modifier * 0.05f;
+                this.baseReturnPheromone = 6f;//0.3f + modifier * 0.1f;
+                this.returnPheromone = 0.005f;//modifier*0.01f;
             }
 
             this.distance = 0;
@@ -119,9 +120,9 @@ public class AntColonySolver implements Solver {
         Ant[] ants;
 
         if(grid.length < 100) {
-            ants = new Ant[grid.length * 8 + 50];
+            ants = new Ant[grid.length * 10 + 50];
         } else {
-            ants = new Ant[850];
+            ants = new Ant[1050];
         }
 
         Block agent = maze.getAgentPosition();
@@ -135,12 +136,10 @@ public class AntColonySolver implements Solver {
             ants[i] = new Ant(agent.getX(), agent.getY(), grid.length);
         }
 
-
-        for(int i=0; i<50000; i++) {
+        for(int i=0; i<40000; i++) {
             for(Ant ant : ants) {
                 moveAnt(ant, grid, pheromoneMap);
             }
-            //Arrays.stream(ants).parallel().forEach(e -> moveAnt(e, grid, pheromoneMap));
             updatePheromones(pheromoneMap, ants);
         }
         float[] minMax = minMax(pheromoneMap);
@@ -160,7 +159,7 @@ public class AntColonySolver implements Solver {
                 System.out.print(pheromoneMap[i][j] + " ");
                 if(pheromoneMap[i][j] > 0.01f && !grid[i][j].getBlockType().equals(BlockType.END) && !grid[i][j].getBlockType().equals(BlockType.AGENT)) {
                     float tmp = pheromoneMap[i][j];
-                    //tmp = 2.857f * tmp * tmp * tmp - 3.5f * tmp * tmp + 1.64f * tmp;
+                    tmp = 4.1354f * tmp * tmp * tmp - 7.475f * tmp * tmp + 4.3295f * tmp;
                     grid[i][j].setIntensity(tmp);
                     grid[i][j].setBlockType(BlockType.PHEROMONE);
                 }
@@ -194,11 +193,11 @@ public class AntColonySolver implements Solver {
         for(int i=0; i<pheromoneMap.length; i++) {
             for(int j=0; j<pheromoneMap[0].length; j++) {
                 pheromoneMap[i][j] *= (1 - evaporateRate);
-                if(pheromoneMap[i][j] > 100.0f) {
-                    pheromoneMap[i][j] = 100.0f;
-                }
-                if(pheromoneMap[i][j] < 1.0f) {
-                    pheromoneMap[i][j] = 1.0f;
+                /*if(pheromoneMap[i][j] > 1000.0f) {
+                    pheromoneMap[i][j] = 1000.0f;
+                }*/
+                if(pheromoneMap[i][j] < 5.0f) {
+                    pheromoneMap[i][j] = 5.0f;
                 }
             }
         }
@@ -217,7 +216,7 @@ public class AntColonySolver implements Solver {
             ant.y = block[1];
             return;
         } else if(ant.state == 0) {
-            if(ant.distance > grid.length * 8) {
+            if(ant.distance > grid.length * 6) {
                 ant.respawn();
                 return;
             }
