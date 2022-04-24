@@ -20,6 +20,11 @@ public class MainGui {
             ,saveMazeBtn,loadMazeBtn,solveBtn,clearStatisticsButton, sortStatisticsButton,
             editAgentBtn,editDestinationBtn,editModeBtn,clearPathBtn,repositionButton,algoMenuButton,
             algoSelectButton,algoSelectLeft,algoSelectRight,generatorSelectButton,generatorSelectLeft,generatorSelectRight;
+    //Algo submenu
+    public OurButton iterSelect, iterSelectLeft, iterSelectRight;
+    public OurButton distanceSelect, distanceSelectLeft, distanceSelectRight;
+    public OurButton evaporateSelect, evaporateLeft, evaporateRight;
+    public OurButton pheromoneSelect, pheromoneLeft, pheromoneRight;
     public float block_size = 10; // SZEROKOSC I WYSOKOSC W JEDNYM NO LOL TO PRZECIE KWADRAT
     private boolean edit_mode = true;
     private edit_type edit_mode_type = EDIT;
@@ -96,6 +101,46 @@ public class MainGui {
         algoSelectLeft.deactivate();
         algoSelectRight.deactivate();
 
+        //Algo SubMenu
+
+        iterSelect = new OurButton(45,editPH.getNewRelativePosition(50),200,50,"5000",shapeRenderer);
+        iterSelectLeft = new OurButton(10,editPH.getRelativePosition(),35,50,"<",shapeRenderer);
+        iterSelectRight = new OurButton(245,editPH.getRelativePosition(),35,50,">",shapeRenderer);
+        iterSelect.isHoverable =false;
+
+        algoMenuButton.addChild(iterSelect);
+        algoMenuButton.addChild(iterSelectLeft);
+        algoMenuButton.addChild(iterSelectRight);
+
+        distanceSelect = new OurButton(45,editPH.getNewRelativePosition(50),200,50,"0.02",shapeRenderer);
+        distanceSelectLeft = new OurButton(10,editPH.getRelativePosition(),35,50,"<",shapeRenderer);
+        distanceSelectRight = new OurButton(245,editPH.getRelativePosition(),35,50,">",shapeRenderer);
+        distanceSelect.isHoverable =false;
+
+        algoMenuButton.addChild(distanceSelect);
+        algoMenuButton.addChild(distanceSelectLeft);
+        algoMenuButton.addChild(distanceSelectRight);
+
+        evaporateSelect = new OurButton(45,editPH.getNewRelativePosition(50),200,50,"0.002",shapeRenderer);
+        evaporateLeft = new OurButton(10,editPH.getRelativePosition(),35,50,"<",shapeRenderer);
+        evaporateRight = new OurButton(245,editPH.getRelativePosition(),35,50,">",shapeRenderer);
+        evaporateSelect.isHoverable =false;
+
+        algoMenuButton.addChild(evaporateSelect);
+        algoMenuButton.addChild(evaporateLeft);
+        algoMenuButton.addChild(evaporateRight);
+
+        pheromoneSelect = new OurButton(45,editPH.getNewRelativePosition(50),200,50,"1",shapeRenderer);
+        pheromoneLeft = new OurButton(10,editPH.getRelativePosition(),35,50,"<",shapeRenderer);
+        pheromoneRight = new OurButton(245,editPH.getRelativePosition(),35,50,">",shapeRenderer);
+        pheromoneSelect.isHoverable =false;
+
+        algoMenuButton.addChild(pheromoneSelect);
+        algoMenuButton.addChild(pheromoneLeft);
+        algoMenuButton.addChild(pheromoneRight);
+
+        //-----------
+
         algoMenuButton.addChild(solveBtn);
         algoMenuButton.addChild(algoSelectButton);
         algoMenuButton.addChild(algoSelectLeft);
@@ -153,6 +198,27 @@ public class MainGui {
         algoSelectLeft.draw(batch);
         algoSelectRight.draw(batch);
         repositionButton.draw(batch);
+
+
+        //ALG submenu
+
+        if(algoSelectButton.getText().equals("ANT COLONY")) {
+            iterSelect.draw(batch);
+            iterSelectLeft.draw(batch);
+            iterSelectRight.draw(batch);
+
+            distanceSelect.draw(batch);
+            distanceSelectLeft.draw(batch);
+            distanceSelectRight.draw(batch);
+
+            evaporateSelect.draw(batch);
+            evaporateLeft.draw(batch);
+            evaporateRight.draw(batch);
+
+            pheromoneSelect.draw(batch);
+            pheromoneLeft.draw(batch);
+            pheromoneRight.draw(batch);
+        }
         shapeRenderer.end();
     }
 
@@ -227,6 +293,14 @@ public class MainGui {
         if(repositionButton.isPressed()) return "REPOSITION";
         if(generatorSelectRight.isPressed()) return "GEN_RIGHT";
         if(generatorSelectLeft.isPressed()) return "GEN_LEFT";
+        if(iterSelectLeft.isPressed()) return "ITER_LEFT";
+        if(iterSelectRight.isPressed()) return "ITER_RIGHT";
+        if(distanceSelectRight.isPressed()) return "DISTANCE_RIGHT";
+        if(distanceSelectLeft.isPressed()) return "DISTANCE_LEFT";
+        if(evaporateLeft.isPressed()) return "EVAPORATE_LEFT";
+        if(evaporateRight.isPressed()) return "EVAPORATE_RIGHT";
+        if(pheromoneLeft.isPressed()) return "PHEROMONE_LEFT";
+        if(pheromoneRight.isPressed()) return "PHEROMONE_RIGHT";
         return "";
     }
 

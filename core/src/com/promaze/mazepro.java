@@ -102,6 +102,7 @@ public class mazepro extends ApplicationAdapter{
 		}
 
 		if (gui.buttonListener().equals("SOLVE_MAZE")){
+			maze.removePaths();
 			Solver solver = this.solvers.get(solvers_index);
 			Stopwatch stopwatch = new StopwatchImpl();
 			stopwatch.start();
@@ -137,6 +138,82 @@ public class mazepro extends ApplicationAdapter{
 		if (gui.buttonListener().equals("REPOSITION")){
 			maze.repositionActors();
 		}
+
+		//ALG SUbMenu
+
+		if(gui.buttonListener().equals("ITER_LEFT")) {
+			int currentIter = Integer.parseInt(gui.iterSelect.getText());
+			if(currentIter > 5000) {
+				currentIter -= 5000;
+				AntColonySolver.iterCount = currentIter;
+				gui.iterSelect.setText(String.valueOf(currentIter));
+			}
+		}
+
+		if(gui.buttonListener().equals("ITER_RIGHT")) {
+			int currentIter = Integer.parseInt(gui.iterSelect.getText());
+			if(currentIter < 80000) {
+				currentIter += 5000;
+				AntColonySolver.iterCount = currentIter;
+				gui.iterSelect.setText(String.valueOf(currentIter));
+			}
+		}
+
+		if(gui.buttonListener().equals("DISTANCE_LEFT")) {
+			float currentIter = Float.parseFloat(gui.distanceSelect.getText());
+			if(currentIter > 0.002f) {
+				currentIter -= 0.002f;
+				AntColonySolver.distanceModifier = currentIter;
+				gui.distanceSelect.setText(String.valueOf(currentIter));
+			}
+		}
+
+		if(gui.buttonListener().equals("DISTANCE_RIGHT")) {
+			float currentIter = Float.parseFloat(gui.distanceSelect.getText());
+			if(currentIter < 1f) {
+				currentIter += 0.002f;
+				AntColonySolver.distanceModifier = currentIter;
+				gui.distanceSelect.setText(String.valueOf(currentIter));
+			}
+		}
+
+		if(gui.buttonListener().equals("EVAPORATE_LEFT")) {
+			float currentIter = Float.parseFloat(gui.evaporateSelect.getText());
+			if(currentIter > 0.002f) {
+				currentIter -= 0.001f;
+				AntColonySolver.evaporateRate = currentIter;
+				gui.evaporateSelect.setText(String.valueOf(currentIter));
+			}
+		}
+
+		if(gui.buttonListener().equals("EVAPORATE_RIGHT")) {
+			float currentIter = Float.parseFloat(gui.evaporateSelect.getText());
+			if(currentIter < 0.01f) {
+				currentIter += 0.001f;
+				AntColonySolver.evaporateRate = currentIter;
+				gui.evaporateSelect.setText(String.valueOf(currentIter));
+			}
+		}
+
+		if(gui.buttonListener().equals("PHEROMONE_LEFT")) {
+			float currentIter = Float.parseFloat(gui.pheromoneSelect.getText());
+			if(currentIter > 0.6f) {
+				currentIter -= 0.3f;
+				AntColonySolver.baseReturnPheromone = currentIter;
+				gui.pheromoneSelect.setText(String.valueOf(currentIter));
+			}
+		}
+
+		if(gui.buttonListener().equals("PHEROMONE_RIGHT")) {
+			float currentIter = Float.parseFloat(gui.pheromoneSelect.getText());
+			if(currentIter < 15f) {
+				currentIter += 0.3f;
+				AntColonySolver.baseReturnPheromone = currentIter;
+				gui.pheromoneSelect.setText(String.valueOf(currentIter));
+			}
+		}
+
+		//--------
 
 
 		if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || gui.buttonListener().equals("GENBUTTON")) //TESTOWANIE

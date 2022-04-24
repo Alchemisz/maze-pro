@@ -22,6 +22,9 @@ public class OurButton {
     public void setText(String text) {
         this.text = text;
     }
+    public String getText() {
+        return this.text;
+    }
 
     private ShapeRenderer shapeRenderer;
     private BitmapFont font;

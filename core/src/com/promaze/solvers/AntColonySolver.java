@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 public class AntColonySolver implements Solver {
     public String name = "ANT COLONY";
+    public static int iterCount = 5000;
 
     @Override
     public String getName()
@@ -17,7 +18,10 @@ public class AntColonySolver implements Solver {
     }
 
     private Random rand;
-    float evaporateRate = 0.003f;
+    public static float evaporateRate = 0.002f;
+    public static float distanceModifier = 0.05f;
+    public static float baseReturnPheromone = 1f;
+
 
     public AntColonySolver() {
         rand = new Random();
@@ -31,9 +35,7 @@ public class AntColonySolver implements Solver {
         public int state = 0;
         public Stack<Integer[]> path = new Stack<>();
         float basePheromone;
-        float baseReturnPheromone;
         float returnPheromone;
-        float distanceModifier;
         public int distance;
         public float distanceInc;
         int init = 1;
@@ -49,19 +51,16 @@ public class AntColonySolver implements Solver {
             this.parentY = -1;
 
             if(modifier < 25f) {
-                this.distanceModifier = 0.05f;
-                this.basePheromone = 0.0001f;//0.1f + modifier * 0.05f;
-                this.baseReturnPheromone = 1f;//0.3f + modifier * 0.1f;
+                this.basePheromone = 0.0000f;//0.1f + modifier * 0.05f;
+                //this.baseReturnPheromone = 1f;//0.3f + modifier * 0.1f;
                 this.returnPheromone = 0.005f;
             } else if (modifier < 45f){
-                this.distanceModifier = 0.05f;
-                this.basePheromone = 0.0001f;//0.1f + modifier * 0.05f;
-                this.baseReturnPheromone = 1f;//0.3f + modifier * 0.1f;
+                this.basePheromone = 0.0000f;//0.1f + modifier * 0.05f;
+                //this.baseReturnPheromone = 1f;//0.3f + modifier * 0.1f;
                 this.returnPheromone = 0.005f;
             } else {
-                this.distanceModifier = 0.05f;
                 this.basePheromone = 0.0f;//0.1f + modifier * 0.05f;
-                this.baseReturnPheromone = 6f;//0.3f + modifier * 0.1f;
+                //this.baseReturnPheromone = 6f;//0.3f + modifier * 0.1f;
                 this.returnPheromone = 0.005f;//modifier*0.01f;
             }
 
@@ -84,8 +83,8 @@ public class AntColonySolver implements Solver {
             this.state = 0;
             this.x = this.initX;
             this.y = this.initY;
-            this.parentX = this.x;
-            this.parentY = this.y;
+            this.parentX = -1;
+            this.parentY = -1;
             this.path.clear();
             this.distance = 0;
             this.distanceInc = 1.0f;
@@ -93,7 +92,7 @@ public class AntColonySolver implements Solver {
 
         public void incrementDistance() {
             this.distance += 1;
-            this.distanceInc += this.distanceModifier;
+            this.distanceInc += AntColonySolver.distanceModifier;
         }
 
         public float getPheromone() {
@@ -103,7 +102,7 @@ public class AntColonySolver implements Solver {
             if(this.state == 0) {
                 return 0f + this.basePheromone/distanceInc;//0.13f ;//+ 0.5f/distanceInc;//+ 0.9f/distanceInc;
             } else {
-                return this.returnPheromone + this.baseReturnPheromone/distanceInc;
+                return this.returnPheromone + AntColonySolver.baseReturnPheromone/distanceInc;
             }
         }
 
@@ -136,7 +135,7 @@ public class AntColonySolver implements Solver {
             ants[i] = new Ant(agent.getX(), agent.getY(), grid.length);
         }
 
-        for(int i=0; i<40000; i++) {
+        for(int i=0; i<iterCount; i++) {
             for(Ant ant : ants) {
                 moveAnt(ant, grid, pheromoneMap);
             }
