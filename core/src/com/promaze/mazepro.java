@@ -5,7 +5,10 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.promaze.fileManager.FileManager;
 import com.promaze.generateAlgorithms.BinaryTree;
 import com.promaze.generateAlgorithms.MazeGenerator;
@@ -42,6 +45,8 @@ public class mazepro extends ApplicationAdapter{
 	int generators_index = 0;
 
 	NativeFileChooser fileChooser;
+
+
 	public mazepro(NativeFileChooser fileChooser) {
 		super();
 		this.fileChooser = fileChooser;
