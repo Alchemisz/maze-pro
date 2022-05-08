@@ -53,10 +53,14 @@ public class Block extends ClickListener {
     {
         if(!Gdx.input.justTouched())return;
 
+        float scaledMouseX = ((float) Gdx.input.getX() / (float) Gdx.graphics.getWidth()) * 1280;
+        float scaledMouseY = ((float)Gdx.input.getY() / (float)Gdx.graphics.getHeight()) * 720;
+
+
         float x2 = x+size;
         float y2 = y+size;
-        float mouseX = Gdx.input.getX();
-        float mouseY = Gdx.input.getY();
+        float mouseX = scaledMouseX;
+        float mouseY = scaledMouseY;
 
         if(x<mouseX && mouseX<x2)
             if(y<mouseY && mouseY<y2)
@@ -68,10 +72,14 @@ public class Block extends ClickListener {
     {
         if(!Gdx.input.justTouched())return;
 
+        float scaledMouseX = ((float) Gdx.input.getX() / (float) Gdx.graphics.getWidth()) * 1280;
+        float scaledMouseY = ((float)Gdx.input.getY() / (float)Gdx.graphics.getHeight()) * 720;
+
+
         float x2 = x+size;
         float y2 = y+size;
-        float mouseX = Gdx.input.getX();
-        float mouseY = Gdx.input.getY();
+        float mouseX = scaledMouseX;
+        float mouseY = scaledMouseY;
 
         System.out.println(this.blockType);
         if(x<mouseX && mouseX<x2)
@@ -86,10 +94,13 @@ public class Block extends ClickListener {
     {
         if(!Gdx.input.justTouched())return;
 
+        float scaledMouseX = ((float) Gdx.input.getX() / (float) Gdx.graphics.getWidth()) * 1280;
+        float scaledMouseY = ((float)Gdx.input.getY() / (float)Gdx.graphics.getHeight()) * 720;
+
         float x2 = x+size;
         float y2 = y+size;
-        float mouseX = Gdx.input.getX();
-        float mouseY = Gdx.input.getY();
+        float mouseX = scaledMouseX;
+        float mouseY = scaledMouseY;
 
         if(x<mouseX && mouseX<x2)
             if(y<mouseY && mouseY<y2) {
@@ -102,10 +113,13 @@ public class Block extends ClickListener {
 
     public boolean isHighlighted(float x, float y, float size)
     {
+        float scaledMouseX = ((float) Gdx.input.getX() / (float) Gdx.graphics.getWidth()) * 1280;
+        float scaledMouseY = ((float)Gdx.input.getY() / (float)Gdx.graphics.getHeight()) * 720;
+
         float x2 = x+size;
         float y2 = y+size;
-        float mouseX = Gdx.input.getX();
-        float mouseY = Gdx.input.getY();
+        float mouseX = scaledMouseX;
+        float mouseY = scaledMouseY;
 
         if(x<mouseX && mouseX<x2)
             if(y<mouseY && mouseY<y2)

@@ -134,10 +134,13 @@ public class OurButton {
 
     public boolean isHighlighted()
     {
+        float scaledMouseX = ((float) Gdx.input.getX() / (float) Gdx.graphics.getWidth()) * 1280;
+        float scaledMouseY = ((float)Gdx.input.getY() / (float)Gdx.graphics.getHeight()) * 720;
+
         float x2 = x+width;
         float y2 = y+height;
-        float mouseX = Gdx.input.getX();
-        float mouseY = 720 - Gdx.input.getY();
+        float mouseX = scaledMouseX;
+        float mouseY = 720 - scaledMouseY;
 
         if(x<mouseX && mouseX<x2)
             if(y<mouseY && mouseY<y2)
