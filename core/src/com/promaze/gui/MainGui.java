@@ -107,6 +107,7 @@ public class MainGui {
         iterSelectLeft = new OurButton(10,editPH.getRelativePosition(),35,50,"<",shapeRenderer);
         iterSelectRight = new OurButton(245,editPH.getRelativePosition(),35,50,">",shapeRenderer);
         iterSelect.isHoverable =false;
+        iterSelect.setLabel("ITERATION:");
 
         algoMenuButton.addChild(iterSelect);
         algoMenuButton.addChild(iterSelectLeft);
@@ -116,6 +117,7 @@ public class MainGui {
         distanceSelectLeft = new OurButton(10,editPH.getRelativePosition(),35,50,"<",shapeRenderer);
         distanceSelectRight = new OurButton(245,editPH.getRelativePosition(),35,50,">",shapeRenderer);
         distanceSelect.isHoverable =false;
+        distanceSelect.setLabel("DISTANCE:");
 
         algoMenuButton.addChild(distanceSelect);
         algoMenuButton.addChild(distanceSelectLeft);
@@ -125,6 +127,7 @@ public class MainGui {
         evaporateLeft = new OurButton(10,editPH.getRelativePosition(),35,50,"<",shapeRenderer);
         evaporateRight = new OurButton(245,editPH.getRelativePosition(),35,50,">",shapeRenderer);
         evaporateSelect.isHoverable =false;
+        evaporateSelect.setLabel("EVAPORATION:");
 
         algoMenuButton.addChild(evaporateSelect);
         algoMenuButton.addChild(evaporateLeft);
@@ -134,6 +137,7 @@ public class MainGui {
         pheromoneLeft = new OurButton(10,editPH.getRelativePosition(),35,50,"<",shapeRenderer);
         pheromoneRight = new OurButton(245,editPH.getRelativePosition(),35,50,">",shapeRenderer);
         pheromoneSelect.isHoverable =false;
+        pheromoneSelect.setLabel("PHEROMONE:");
 
         algoMenuButton.addChild(pheromoneSelect);
         algoMenuButton.addChild(pheromoneLeft);
@@ -146,6 +150,8 @@ public class MainGui {
         algoMenuButton.addChild(algoSelectLeft);
         algoMenuButton.addChild(algoSelectRight);
         algoMenuButton.addChild(repositionButton);
+
+        algoMenuButton.deactivateChildButtons();
 
         clearStatisticsButton = new OurButton(1002, 57, 266, 50, "CLEAR STATISTICS", shapeRenderer);
         sortStatisticsButton = new OurButton(1002, 10, 266, 50, "SORT STATISTICS", shapeRenderer);
@@ -392,6 +398,7 @@ public class MainGui {
     }
 
     //Raczej tymczasowe funkcje, potem pewnie zrobie lepsze skalowanie
+    //UPDATE 28.05.2022 XD NO NA PEWNO
 
     private void calculate_optimal_block_size(Maze maze)
     {

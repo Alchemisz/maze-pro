@@ -15,9 +15,14 @@ public class OurButton {
     private Color border,content;
     private Color bright = new Color(0.2f,0.2f,0.2f,1f);
     private String text;
+    private String label = "";
     public boolean isActive = true, isEnabled = false, isHoverable = true;
     private LinkedList<OurButton> childButtons = new LinkedList<OurButton>();
 
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
     public void setText(String text) {
         this.text = text;
@@ -53,7 +58,7 @@ public class OurButton {
 
         shapeRenderer.end();
         batch.begin();
-        font.draw(batch,text,x - border_thickness,y + border_thickness + height/2 + textOffsetY,width,1,false);
+        font.draw(batch,label+text,x - border_thickness,y + border_thickness + height/2 + textOffsetY,width,1,false);
         batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
     }
