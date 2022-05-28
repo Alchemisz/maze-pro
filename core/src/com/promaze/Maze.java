@@ -11,6 +11,12 @@ public class Maze{
     private Integer columns;
     private Block[][] mazeGrid;
 
+    public int finalLength = 0;
+
+    public int getFinalLength() {
+        return finalLength;
+    }
+
     public Maze(Block[][] mazeGrid) {
         this.rows = mazeGrid.length;
         this.columns = mazeGrid[0].length;

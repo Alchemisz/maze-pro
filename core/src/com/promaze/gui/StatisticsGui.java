@@ -31,7 +31,6 @@ public class StatisticsGui {
     public void draw(int x, int y)
     {
         int spaceBetweenTimes = 70;
-
         shapeRenderer.rect(x,y ,width,height,border,border,border,border);
         shapeRenderer.rect(x +border_thickness,y + border_thickness,width - border_thickness * 2,height - border_thickness * 2,
                 content,content,content,content);
@@ -40,11 +39,26 @@ public class StatisticsGui {
 
         shapeRenderer.end();
         batch.begin();
+
         font.draw(batch,"Statistics",x - border_thickness,y - border_thickness* 3 + height,width,1,false);
+        x -= 37 - border_thickness;
+
         y-=30;
         int temp_y = y;
+
+        y = temp_y;
+        x-=spaceBetweenTimes*1;
+        font.draw(batch,"Name",x - border_thickness,y - border_thickness* 3 + height,width,1,false);
+        y-=25;
+        for(StatisticItem item : statistics.getStatisticItems())
+        {
+            font.draw(batch,item.getName()+"",x - border_thickness,y - border_thickness* 3 + height,width,1,false);
+            y-=27;
+        }
+
+        y = temp_y;
         x+=spaceBetweenTimes;
-        font.draw(batch,"Time (mm:ss:ms)",x - border_thickness,y - border_thickness* 3 + height,width,1,false);
+        font.draw(batch,"Time",x - border_thickness,y - border_thickness* 3 + height,width,1,false);
         y-=25;
         for(StatisticItem item : statistics.getStatisticItems())
         {
@@ -52,12 +66,22 @@ public class StatisticsGui {
             y-=27;
         }
         y = temp_y;
-        x-=spaceBetweenTimes*2;
-        font.draw(batch,"Maze Size",x - border_thickness,y - border_thickness* 3 + height,width,1,false);
+        x+=spaceBetweenTimes;
+        font.draw(batch,"Size",x - border_thickness,y - border_thickness* 3 + height,width,1,false);
         y-=25;
         for(StatisticItem item : statistics.getStatisticItems())
         {
             font.draw(batch,item.getMazeSize()+"",x - border_thickness,y - border_thickness* 3 + height,width,1,false);
+            y-=27;
+        }
+
+        y = temp_y;
+        x+=spaceBetweenTimes;
+        font.draw(batch,"Length",x - border_thickness,y - border_thickness* 3 + height,width,1,false);
+        y-=25;
+        for(StatisticItem item : statistics.getStatisticItems())
+        {
+            font.draw(batch,item.getLength()+"",x - border_thickness,y - border_thickness* 3 + height,width,1,false);
             y-=27;
         }
         batch.end();

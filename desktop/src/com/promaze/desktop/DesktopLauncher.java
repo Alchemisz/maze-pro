@@ -16,7 +16,7 @@ public class DesktopLauncher {
 		config.foregroundFPS = 60;
 		config.backgroundFPS = 60;
 		config.resizable = true;
-		config.title = "MAZE PRO TESTOWA WERSJA 0.2";
+		config.title = "MAZE PRO";
 		new LwjglApplication(new mazepro(new DesktopFileChooser()), config);
 	}
 }
