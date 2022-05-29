@@ -7,4 +7,5 @@ import java.util.List;
 public interface Solver {
     public List<Maze> solve(Maze maze);
     public String getName();
+    public int getLength();
 }

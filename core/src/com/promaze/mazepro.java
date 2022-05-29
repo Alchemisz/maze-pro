@@ -116,7 +116,7 @@ public class mazepro extends ApplicationAdapter{
 			System.out.println(timeCycle);
 
 
-			this.statistics.addStatisticItem(new StatisticItem(timeCycle,maze.getSize(),solver.getName(),maze.getFinalLength()));
+			this.statistics.addStatisticItem(new StatisticItem(timeCycle,maze.getSize(),solver.getName(),solver.getLength()));
 			System.out.println(statistics);
 
 			if(!steps.isEmpty()) {
