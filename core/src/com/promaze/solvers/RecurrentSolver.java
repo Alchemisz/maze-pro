@@ -12,11 +12,17 @@ import java.util.Stack;
 public class RecurrentSolver implements Solver {
 
     public String name = "RECURRENT";
+    private int length = Integer.MAX_VALUE;
 
     @Override
     public String getName()
     {
         return name;
+    }
+
+    @Override
+    public int getLength() {
+        return length;
     }
 
     @Override
@@ -42,24 +48,27 @@ public class RecurrentSolver implements Solver {
         Stack<Block> path = new Stack<>();
         Stack<Block> queue = new Stack<>();
         Block agent = maze.getAgentPosition();
-        if(agent.getX() == -1) {
+        Block fakeAgent = agent;
+        if(fakeAgent.getX() == -1) {
             return steps;
         }
-        visitedMap[agent.getX()][agent.getY()] = 1;
-        queue.add(agent);
-        path.add(agent);
+        visitedMap[fakeAgent.getX()][fakeAgent.getY()] = 1;
+        queue.add(fakeAgent);
+        path.add(fakeAgent);
         while(!queue.empty()) {
             Block currentBlock = queue.pop();
-            grid[agent.getX()][agent.getY()].setBlockType(BlockType.VISITED);
+            grid[fakeAgent.getX()][fakeAgent.getY()].setBlockType(BlockType.VISITED);
 
             if(currentBlock.getBlockType().equals(BlockType.END)) {
-                grid[agent.getX()][agent.getY()].setBlockType(BlockType.AGENT);
-                currentBlock = agent;
+                grid[fakeAgent.getX()][fakeAgent.getY()].setBlockType(BlockType.AGENT);
+                currentBlock = fakeAgent;
                 int _x = currentBlock.getX();
                 int _y = currentBlock.getY();
                 int parentX = parentMap[_x][_y][0];
                 int parentY = parentMap[_x][_y][1];
+                length = 0;
                 while(parentX != -1) {
+                    length += 1;
                     grid[parentX][parentY].setBlockType(BlockType.PATH);
                     currentBlock = grid[parentX][parentY];
                     _x = currentBlock.getX();
@@ -67,24 +76,29 @@ public class RecurrentSolver implements Solver {
                     parentX = parentMap[_x][_y][0];
                     parentY = parentMap[_x][_y][1];
                 }
-                steps.add(new Maze(grid));
+
+                grid[fakeAgent.getX()][fakeAgent.getY()].setBlockType(BlockType.PATH);
+                grid[agent.getX()][agent.getY()].setBlockType(BlockType.AGENT);
+                Maze currentMaze = new Maze(grid);
+                currentMaze.finalLength = length;
+                steps.add(currentMaze);
                 return steps;
             }
-            agent = currentBlock;
-            grid[agent.getX()][agent.getY()].setBlockType(BlockType.AGENT);
+            fakeAgent = currentBlock;
+            grid[fakeAgent.getX()][fakeAgent.getY()].setBlockType(BlockType.AGENT);
 
-            Maze currentMaze = new Maze(grid);
-            steps.add(currentMaze);
+            //Maze currentMaze = new Maze(grid);
+            //steps.add(currentMaze);
 
             for(int i=0; i<8; i+=2) {
-                int _x = agent.getX() + neighbours[i];
-                int _y = agent.getY() + neighbours[i+1];
+                int _x = fakeAgent.getX() + neighbours[i];
+                int _y = fakeAgent.getY() + neighbours[i+1];
 
                 if((_x >= 0 && _y >= 0 && _x < grid.length && _y < grid[0].length) && visitedMap[_x][_y] < 1) {
                     if(!grid[_x][_y].getBlockType().equals(BlockType.WALL)) {
                         visitedMap[_x][_y] = 1;
-                        parentMap[_x][_y][0] = agent.getX();
-                        parentMap[_x][_y][1] = agent.getY();
+                        parentMap[_x][_y][0] = fakeAgent.getX();
+                        parentMap[_x][_y][1] = fakeAgent.getY();
                         queue.add(grid[_x][_y]);
                         if(grid[_x][_y].getBlockType().equals(BlockType.END)) {
                             break;
@@ -93,6 +107,11 @@ public class RecurrentSolver implements Solver {
                 }
             }
         }
+        Maze currentMaze = new Maze(grid);
+        grid[fakeAgent.getX()][fakeAgent.getY()].setBlockType(BlockType.PATH);
+        grid[agent.getX()][agent.getY()].setBlockType(BlockType.AGENT);
+        currentMaze.finalLength = length;
+        steps.add(currentMaze);
         return steps;
     }
 

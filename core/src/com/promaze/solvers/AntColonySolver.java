@@ -10,11 +10,17 @@ import java.util.stream.Stream;
 public class AntColonySolver implements Solver {
     public String name = "ANT COLONY";
     public static int iterCount = 5000;
+    private int length = Integer.MAX_VALUE;
 
     @Override
     public String getName()
     {
         return name;
+    }
+
+    @Override
+    public int getLength() {
+        return length;
     }
 
     private Random rand;
@@ -110,6 +116,7 @@ public class AntColonySolver implements Solver {
 
     @Override
     public List<Maze> solve(Maze maze) {
+        length = Integer.MAX_VALUE;
         List<Maze> list = new ArrayList<>();
         list.add(maze);
 
@@ -165,7 +172,7 @@ public class AntColonySolver implements Solver {
             }
             System.out.println();
         }
-
+        list.get(0).finalLength = length;
         return list;
     }
 
@@ -240,6 +247,9 @@ public class AntColonySolver implements Solver {
                     if (grid[_x][_y].getBlockType().equals(BlockType.END)) {
                         if (ant.state == 0) {
                             //ant.state = 1;
+                            if(length > ant.distance) {
+                                length = ant.path.size();
+                            }
                             ant.changeState();
                             ant.path.add(new Integer[]{ant.x, ant.y});
                             continue;

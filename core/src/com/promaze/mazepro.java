@@ -113,13 +113,11 @@ public class mazepro extends ApplicationAdapter{
 			stopwatch.start();
 			List<Maze> steps = solver.solve(maze);
 			TimeCycle timeCycle = stopwatch.stop();
+			System.out.println(timeCycle);
 
 
-			this.statistics.addStatisticItem(new StatisticItem(timeCycle,maze.getSize(),solver.getName(),maze.getFinalLength()));
-			if(this.statistics.getStatisticItems().size() == 20)
-			{
-				this.gui.solveBtn.deactivate();
-			}
+			this.statistics.addStatisticItem(new StatisticItem(timeCycle,maze.getSize(),solver.getName(),solver.getLength()));
+			System.out.println(statistics);
 
 			if(!steps.isEmpty()) {
 				maze = steps.get(steps.size()-1);
@@ -172,13 +170,6 @@ public class mazepro extends ApplicationAdapter{
 				currentIter -= 0.002f;
 				AntColonySolver.distanceModifier = currentIter;
 				gui.distanceSelect.setText(String.valueOf(currentIter));
-			}
-		}
-
-		if(gui.buttonListener().equals("ALGO_MENU")) {
-			if(this.statistics.getStatisticItems().size() == 20)
-			{
-				this.gui.solveBtn.deactivate();
 			}
 		}
 
