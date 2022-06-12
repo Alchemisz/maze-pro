@@ -19,7 +19,7 @@ public class MainGui {
     public OurButton editButton,generateButton,genIncButton,genDecButton
             ,saveMazeBtn,loadMazeBtn,solveBtn,clearStatisticsButton, sortStatisticsButton,
             editAgentBtn,editDestinationBtn,editModeBtn,clearPathBtn,repositionButton,algoMenuButton,
-            algoSelectButton,algoSelectLeft,algoSelectRight,generatorSelectButton,generatorSelectLeft,generatorSelectRight;
+            algoSelectButton,algoSelectLeft,algoSelectRight,generatorSelectButton,generatorSelectLeft,generatorSelectRight,solveImpossible;
     //Algo submenu
     public OurButton iterSelect, iterSelectLeft, iterSelectRight;
     public OurButton distanceSelect, distanceSelectLeft, distanceSelectRight;
@@ -87,7 +87,11 @@ public class MainGui {
 
 
         solveBtn = new OurButton(10,algoPH.getNewRelativePosition(50),270,50,"SOLVE",shapeRenderer);
+        solveImpossible = new OurButton(10,algoPH.getRelativePosition(),270,50,"SOLVE (CLEAR STATISTICS)",shapeRenderer);
         solveBtn.deactivate();
+        solveImpossible.deactivate();
+        solveImpossible.setDarkTheme();
+        solveImpossible.isHoverable = false;
 
         algoSelectButton = new OurButton(45,algoPH.getNewRelativePosition(50),200,50,"ANT COLONY",shapeRenderer);
         algoSelectLeft = new OurButton(10,algoPH.getRelativePosition(),35,50,"<",shapeRenderer);
@@ -146,6 +150,7 @@ public class MainGui {
         //-----------
 
         algoMenuButton.addChild(solveBtn);
+        algoMenuButton.addChild(solveImpossible);
         algoMenuButton.addChild(algoSelectButton);
         algoMenuButton.addChild(algoSelectLeft);
         algoMenuButton.addChild(algoSelectRight);
@@ -189,6 +194,7 @@ public class MainGui {
         genDecButton.draw(batch);
         saveMazeBtn.draw(batch);
         loadMazeBtn.draw(batch);
+        solveImpossible.draw(batch);
         solveBtn.draw(batch);
         sortStatisticsButton.draw(batch);
         clearStatisticsButton.draw(batch);
@@ -241,6 +247,7 @@ public class MainGui {
         }
         if(clearStatisticsButton.isPressed())
         {
+            solveBtn.activate();
             statistics.clearStatistics();
         }
         if(sortStatisticsButton.isPressed())
@@ -295,6 +302,7 @@ public class MainGui {
         if(solveBtn.isPressed()) return "SOLVE_MAZE";
         if(clearPathBtn.isPressed()) return "CLEAR_PATH";
         if(algoSelectLeft.isPressed()) return "ALGO_LEFT";
+        if(algoMenuButton.isPressed()) return "ALGO_MENU";
         if(algoSelectRight.isPressed()) return "ALGO_RIGHT";
         if(repositionButton.isPressed()) return "REPOSITION";
         if(generatorSelectRight.isPressed()) return "GEN_RIGHT";

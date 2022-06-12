@@ -19,6 +19,10 @@ public class OurButton {
     public boolean isActive = true, isEnabled = false, isHoverable = true;
     private LinkedList<OurButton> childButtons = new LinkedList<OurButton>();
 
+    public void setDarkTheme()
+    {
+        content = new Color(0.35f,0.35f,0.35f,1);
+    }
 
     public void setLabel(String label) {
         this.label = label;
