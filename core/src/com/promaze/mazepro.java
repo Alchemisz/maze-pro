@@ -108,6 +108,7 @@ public class mazepro extends ApplicationAdapter{
 
 		if (gui.buttonListener().equals("SOLVE_MAZE")){
 			maze.removePaths();
+			if(!maze.areActorsPlaced())maze.repositionActors();
 			Solver solver = this.solvers.get(solvers_index);
 			Stopwatch stopwatch = new StopwatchImpl();
 			stopwatch.start();

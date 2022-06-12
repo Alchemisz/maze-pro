@@ -134,6 +134,23 @@ public class Maze{
 
     }
 
+    public boolean areActorsPlaced()
+    {
+        boolean actor = false, target = false;
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                Block currentBlock = this.mazeGrid[i][j];
+                if(currentBlock.getBlockType().equals(BlockType.AGENT))
+                    actor = true;
+                if(currentBlock.getBlockType().equals(BlockType.END))
+                    target = true;
+            }
+        }
+
+        return actor & target;
+    }
+
 
     public Block[][] getMazeGrid() {
         return mazeGrid;
